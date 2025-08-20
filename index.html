@@ -66,6 +66,23 @@
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
+  .answers button {
+    background: #6a1b9a;
+    color: #fff;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-family: 'Fredoka One', cursive;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .answers button:hover, .answers button:focus {
+    background: #ffd700;
+    color: #3c1361;
+    outline: none;
+  }
   .result h2 {
     margin-bottom: 2rem;
     font-size: 2.5rem;
@@ -130,7 +147,7 @@
     from {opacity: 0; transform: translateY(20px);}
     to {opacity: 1; transform: translateY(0);}
   }
-  /* Responsive styles */
+  /* Responsive styles for tablets and iPads */
   @media (max-width: 1024px) {
     .container { padding: 1.5rem 2rem; }
     .question { font-size: 1.6rem; }
@@ -140,6 +157,7 @@
     .result .description { font-size: 1rem; }
     .result .home-btn, .result .another-btn, .back-btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
   }
+  /* Responsive styles for smaller tablets and iPads in portrait */
   @media (max-width: 768px) {
     .container { padding: 1.2rem 1.5rem; }
     .question { font-size: 1.4rem; }
@@ -152,257 +170,438 @@
 </head>
 <body>
 <div class="container" role="main" aria-live="polite" aria-atomic="true">
+  <!-- Start Screen -->
   <div class="start-screen" id="start-screen">
     <h1>Are You Ready to Discover Your Place?</h1>
-    <button class="btn" id="start-london">Kharis Church London</button>
-    <button class="btn" id="start-kp2">KP2</button>
+    <button class="btn" id="start-london" aria-label="Start quiz for Kharis Church London">Kharis Church London</button>
+    <button class="btn" id="start-kp2" aria-label="Start quiz for KP2">KP2</button>
   </div>
-  <div class="question-section" id="quiz" style="display:none;"></div>
+  <!-- Quiz Questions Section -->
+  <div class="question-section" id="quiz" style="display:none;" aria-live="polite" aria-atomic="true"></div>
+  <!-- Back Button -->
   <button class="back-btn" id="back-btn" style="display:none;" aria-label="Go back to previous question">&larr; Back</button>
-  <div class="result" id="result" style="display:none;"></div>
+  <!-- Result Screen -->
+  <div class="result" id="result" style="display:none;" aria-live="polite" aria-atomic="true"></div>
+  <!-- Confetti Canvas -->
   <canvas id="confetti-canvas" class="confetti"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-const quizEl = document.getElementById('quiz');
-const startScreenEl = document.getElementById('start-screen');
-const resultEl = document.getElementById('result');
-const backBtn = document.getElementById('back-btn');
-const confettiCanvas = document.getElementById('confetti-canvas');
-const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
+(() => {
+  const quizEl = document.getElementById('quiz');
+  const startScreenEl = document.getElementById('start-screen');
+  const resultEl = document.getElementById('result');
+  const backBtn = document.getElementById('back-btn');
+  const confettiCanvas = document.getElementById('confetti-canvas');
 
-const questions = {
-  london: [
-    {
-      question: "When faced with chaos, what grounds you most?",
-      answers: [
-        { text: "A plan", dept: "Administration" },
-        { text: "A calm presence", dept: "Host Team" },
-        { text: "A purpose", dept: "Evangelism" },
-        { text: "A clear voice", dept: "Music" },
-        { text: "A reset moment", dept: "Sanctuary Keepers" },
-      ],
-    },
-    {
-      question: "In conversations, what do you often find yourself doing most?",
-      answers: [
-        { text: "Listening for what’s not being said", dept: "Follow Up" },
-        { text: "Offering clarity or solutions", dept: "Administration" },
-        { text: "Making others feel comfortable", dept: "Hospitality" },
-        { text: "Observing the energy in the room", dept: "Production" },
-        { text: "Remembering the little details", dept: "Welfare" },
-      ],
-    },
-    {
-      question: "Which phrase resonates most with how you move through life?",
-      answers: [
-        { text: "“I anticipate before I act.”", dept: "Administration" },
-        { text: "“I anchor what feels unstable.”", dept: "Host Team" },
-        { text: "“I support without needing recognition.”", dept: "Welfare" },
-        { text: "“I inspire through creativity.”", dept: "Design" },
-        { text: "“I protect and provide safety.”", dept: "Security" },
-      ],
-    },
-  ],
-  kp2: [
-    {
-      question: "What’s your energy when no one’s watching?",
-      answers: [
-        { text: "Lofi chill", dept: "K-Music" },
-        { text: "Ready to go!", dept: "Host Team" },
-        { text: "Dreaming up new ideas", dept: "Design" },
-        { text: "Making sure everyone’s good", dept: "Welfare" },
-        { text: "Leading the way", dept: "Security" },
-      ],
-    },
-    {
-      question: "What’s your vibe when the team needs you?",
-      answers: [
-        { text: "Cheerleader and hype man", dept: "K-Drama" },
-        { text: "Organizer and helper", dept: "Administration" },
-        { text: "Tech and sound guru", dept: "Media" },
-        { text: "Friendly face", dept: "Hospitality" },
-        { text: "Keeping order", dept: "Security" },
-      ],
-    },
-    {
-      question: "Pick your dream project:",
-      answers: [
-        { text: "Create a music video", dept: "K-Music" },
-        { text: "Design cool posters", dept: "Design" },
-        { text: "Plan a drama performance", dept: "K-Drama" },
-        { text: "Host a welcome event", dept: "Hospitality" },
-        { text: "Lead safety patrol", dept: "Security" },
-      ],
-    },
-  ],
-};
+  // Confetti instance
+  const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
 
-// Store answers and state
-let selectedDeptScores = {};
-let currentQuestions = [];
-let currentIndex = 0;
-let currentQuiz = '';
-
-function startQuiz(version) {
-  selectedDeptScores = {};
-  currentQuestions = questions[version];
-  currentIndex = 0;
-  currentQuiz = version;
-
-  startScreenEl.style.display = 'none';
-  resultEl.style.display = 'none';
-  backBtn.style.display = 'none';
-  quizEl.style.display = 'flex';
-  quizEl.style.flexDirection = 'column';
-
-  showQuestion();
-}
-
-function showQuestion() {
-  backBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
-  const q = currentQuestions[currentIndex];
-  quizEl.innerHTML = '';
-
-  // Question text
-  const questionEl = document.createElement('div');
-  questionEl.className = 'question';
-  questionEl.textContent = q.question;
-  quizEl.appendChild(questionEl);
-
-  // Answers container
-  const answersEl = document.createElement('div');
-  answersEl.className = 'answers';
-
-  q.answers.forEach((answer, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = answer.text;
-    btn.setAttribute('aria-label', `Answer option: ${answer.text}`);
-    btn.addEventListener('click', () => selectAnswer(answer.dept));
-    answersEl.appendChild(btn);
-  });
-
-  quizEl.appendChild(answersEl);
-}
-
-function selectAnswer(dept) {
-  // Count selected departments
-  selectedDeptScores[dept] = (selectedDeptScores[dept] || 0) + 1;
-  currentIndex++;
-
-  if (currentIndex >= currentQuestions.length) {
-    showResult();
-  } else {
-    showQuestion();
-  }
-}
-
-function showResult() {
-  quizEl.style.display = 'none';
-  backBtn.style.display = 'none';
-
-  // Find department with highest score
-  let highestDept = null;
-  let highestScore = 0;
-  for (const dept in selectedDeptScores) {
-    if (selectedDeptScores[dept] > highestScore) {
-      highestDept = dept;
-      highestScore = selectedDeptScores[dept];
-    }
-  }
-
-  // Department descriptions - add more detailed descriptions as needed
-  const descriptions = {
-    'Administration': "You’re the backbone of the church—organised, reliable, and detail-focused.",
-    'Host Team': "You make everyone feel welcome and create a warm atmosphere.",
-    'Evangelism': "You have a heart to share faith and reach others with the gospel.",
-    'Music': "You bring worship to life with your talents and passion.",
-    'Sanctuary Keepers': "You keep the environment peaceful and orderly.",
-    'Follow Up': "You care deeply for people’s journeys and stay connected.",
-    'Hospitality': "You serve with joy and make others feel at home.",
-    'Production': "You manage the technical side and keep things running smoothly.",
-    'Welfare': "You support those in need with compassion and care.",
-    'Design': "Your creativity helps communicate and inspire visually.",
-    'Security': "You protect and ensure safety with vigilance.",
-    'K-Music': "You bring the youth vibe with music and rhythm.",
-    'K-Drama': "You express stories and faith through performance.",
-    'Media': "You handle the tech and media to spread the word effectively.",
+  // Quiz questions for each version
+  const questions = {
+    london: [
+      {
+        question: "When faced with chaos, what grounds you most?",
+        answers: [
+          { text: "A plan", dept: "Administration" },
+          { text: "A calm presence", dept: "Welfare" },
+          { text: "Creative expression", dept: "Design" },
+          { text: "Leadership and direction", dept: "Host Team" },
+        ],
+      },
+      {
+        question: "Which activity energizes you?",
+        answers: [
+          { text: "Teaching children", dept: "Children's Department" },
+          { text: "Producing visual content", dept: "Design" },
+          { text: "Welcoming new people", dept: "Hospitality" },
+          { text: "Organizing events", dept: "Administration" },
+        ],
+      },
+      {
+        question: "Your communication style is:",
+        answers: [
+          { text: "Expressive and creative", dept: "Drama" },
+          { text: "Clear and concise", dept: "Sound" },
+          { text: "Warm and friendly", dept: "Ushers" },
+          { text: "Encouraging and supportive", dept: "Follow Up" },
+        ],
+      },
+      {
+        question: "What role do you enjoy most in a team?",
+        answers: [
+          { text: "The performer", dept: "Drama" },
+          { text: "The organizer", dept: "Administration" },
+          { text: "The supporter", dept: "Welfare" },
+          { text: "The tech specialist", dept: "Production" },
+        ],
+      },
+      {
+        question: "How do you express your faith creatively?",
+        answers: [
+          { text: "Through music", dept: "Music" },
+          { text: "Through art and design", dept: "Design" },
+          { text: "Through drama", dept: "Drama" },
+          { text: "Through media and social media", dept: "Social Media" },
+        ],
+      },
+      {
+        question: "You prefer to serve by:",
+        answers: [
+          { text: "Helping new believers grow", dept: "New Believers" },
+          { text: "Practical setup and maintenance", dept: "Set-up" },
+          { text: "Security and safety", dept: "Security" },
+          { text: "Welcoming guests", dept: "Hospitality" },
+        ],
+      },
+      {
+        question: "What gives you the most satisfaction in service?",
+        answers: [
+          { text: "Helping others feel welcome", dept: "Ushers" },
+          { text: "Supporting leadership", dept: "Administration" },
+          { text: "Praying and caring for needs", dept: "Welfare" },
+          { text: "Technical excellence", dept: "Sound" },
+        ],
+      },
+      {
+        question: "You’re most passionate about:",
+        answers: [
+          { text: "Evangelism and outreach", dept: "Evangelism" },
+          { text: "Sanctuary care and upkeep", dept: "Sanctuary Keepers" },
+          { text: "Producing engaging media", dept: "Production" },
+          { text: "Creating welcoming environments", dept: "Hospitality" },
+        ],
+      },
+    ],
+    kp2: [
+      {
+        question: "What’s your vibe when you walk into a room?",
+        answers: [
+          { text: "I bring energy and fun", dept: "K-Drama" },
+          { text: "I’m all about music", dept: "K-Music" },
+          { text: "I love helping people", dept: "Welfare" },
+          { text: "I’m a social media whizz", dept: "Social Media" },
+        ],
+      },
+      {
+        question: "If you could lead, you would:",
+        answers: [
+          { text: "Organize the coolest events", dept: "Administration" },
+          { text: "Host and welcome everyone", dept: "Host Team" },
+          { text: "Help friends follow up with newcomers", dept: "Follow Up" },
+          { text: "Keep everything running smoothly", dept: "Set-up" },
+        ],
+      },
+      {
+        question: "How do you express yourself best?",
+        answers: [
+          { text: "Through acting and drama", dept: "K-Drama" },
+          { text: "By creating awesome visuals", dept: "Design" },
+          { text: "Through music and singing", dept: "K-Music" },
+          { text: "By sharing online", dept: "Social Media" },
+        ],
+      },
+      {
+        question: "What’s your favourite way to serve?",
+        answers: [
+          { text: "Greeting and ushering", dept: "Ushers" },
+          { text: "Praying for and caring for others", dept: "Welfare" },
+          { text: "Running sound and tech", dept: "Sound" },
+          { text: "Keeping security", dept: "Security" },
+        ],
+      },
+      {
+        question: "Your ideal project is:",
+        answers: [
+          { text: "Putting on a drama show", dept: "K-Drama" },
+          { text: "Composing and performing music", dept: "K-Music" },
+          { text: "Designing posters and flyers", dept: "Design" },
+          { text: "Managing social media content", dept: "Social Media" },
+        ],
+      },
+      {
+        question: "You get the most satisfaction from:",
+        answers: [
+          { text: "Seeing people grow in faith", dept: "New Believers" },
+          { text: "Helping with event logistics", dept: "Administration" },
+          { text: "Welcoming newcomers warmly", dept: "Hospitality" },
+          { text: "Helping people feel safe", dept: "Security" },
+        ],
+      },
+      {
+        question: "Which would you rather do?",
+        answers: [
+          { text: "Sing on stage", dept: "K-Music" },
+          { text: "Help people find their way", dept: "Host Team" },
+          { text: "Create cool graphics", dept: "Design" },
+          { text: "Manage sound and production", dept: "Sound" },
+        ],
+      },
+      {
+        question: "Your biggest strength is:",
+        answers: [
+          { text: "Creativity", dept: "K-Drama" },
+          { text: "Technical skills", dept: "Sound" },
+          { text: "People skills", dept: "Hospitality" },
+          { text: "Organizational skills", dept: "Administration" },
+        ],
+      },
+    ],
   };
 
-  resultEl.innerHTML = `
-    <h2>Your Best Fit Department</h2>
-    <div class="department">${highestDept || "Undetermined"}</div>
-    <div class="description">${descriptions[highestDept] || "Thanks for participating! Explore where you feel called to serve."}</div>
-    <button class="home-btn" id="home-btn">Start Over</button>
-    <button class="another-btn" id="another-btn" aria-label="Take the other version of the quiz">Try Other Version</button>
-  `;
+  // Department descriptions for showing on results
+  const departmentDescriptions = {
+    "Administration": "Organize and manage church operations and events.",
+    "Children's Department": "Teach and nurture children in their faith.",
+    "Design": "Create visuals and designs for church materials and media.",
+    "Drama": "Act and produce plays to share messages creatively.",
+    "Follow Up": "Connect and support new members on their journey.",
+    "Hospitality": "Welcome and serve guests with warmth and kindness.",
+    "Host Team": "Lead and guide people through church services.",
+    "K-Drama": "Express faith through drama and performance arts.",
+    "K-Music": "Lead worship through singing and instruments.",
+    "Media": "Produce and manage media content and presentations.",
+    "Music": "Lead and perform music in church worship.",
+    "New Believers": "Help newcomers grow and learn about faith.",
+    "Production": "Manage sound, lighting, and technical production.",
+    "Sanctuary Keepers": "Care for and maintain the sanctuary space.",
+    "Set-up": "Prepare and maintain facilities and equipment.",
+    "Social Media": "Create engaging content to connect online.",
+    "Sound": "Manage audio equipment and sound quality.",
+    "Ushers": "Greet and assist attendees during services.",
+    "Uniform": "Coordinate volunteer uniforms and presentation.",
+    "Welfare": "Provide care and support for those in need.",
+    "Security": "Ensure safety and security during events.",
+    "K-Drama": "Engage youth through drama and storytelling.",
+  };
 
-  resultEl.style.display = 'block';
+  let currentQuiz = null;  // 'london' or 'kp2'
+  let currentQuestionIndex = 0;
+  let scores = {};
+  const totalQuestions = 8; // Both quizzes have 8 questions
 
-  // Confetti celebration
-  runConfetti();
+  function initScores() {
+    scores = {};
+    // Get all possible departments for current quiz and set their scores to zero
+    const allDepts = new Set();
+    questions[currentQuiz].forEach(q =>
+      q.answers.forEach(a => allDepts.add(a.dept))
+    );
+    allDepts.forEach(d => (scores[d] = 0));
+  }
 
-  // Setup buttons
-  document.getElementById('home-btn').addEventListener('click', () => {
-    resultEl.style.display = 'none';
+  // Show start screen, hide quiz/result/back button
+  function showStartScreen() {
     startScreenEl.style.display = 'block';
-  });
-  document.getElementById('another-btn').addEventListener('click', () => {
+    quizEl.style.display = 'none';
     resultEl.style.display = 'none';
-    startScreenEl.style.display = 'block';
-  });
-}
+    backBtn.style.display = 'none';
+    clearConfetti();
+  }
 
-backBtn.addEventListener('click', () => {
-  if (currentIndex === 0) return;
-  currentIndex--;
-  // Remove last selected answer dept count
-  const q = currentQuestions[currentIndex];
-  // We do not track which answer was selected last, so let's reduce count for all possible answers just once.
-  // For better UX, store selected answers for precise backtracking.
-  // Here, naive approach:
-  for (const dept of Object.keys(selectedDeptScores)) {
-    if (selectedDeptScores[dept] > 0) {
-      selectedDeptScores[dept]--;
-      if (selectedDeptScores[dept] === 0) delete selectedDeptScores[dept];
-      break;
+  // Start the quiz for chosen version
+  function startQuiz(quizType) {
+    currentQuiz = quizType;
+    currentQuestionIndex = 0;
+    initScores();
+    startScreenEl.style.display = 'none';
+    resultEl.style.display = 'none';
+    backBtn.style.display = 'none';
+    quizEl.style.display = 'block';
+    showQuestion();
+  }
+
+  // Show the current question and answers
+  function showQuestion() {
+    const qObj = questions[currentQuiz][currentQuestionIndex];
+    quizEl.innerHTML = `
+      <div class="question">${qObj.question}</div>
+      <div class="answers" role="list">
+        ${qObj.answers.map(
+          (ans, i) =>
+            `<button class="answer-btn" role="listitem" data-dept="${ans.dept}" data-index="${i}" aria-label="${ans.text}">${ans.text}</button>`
+        ).join('')}
+      </div>
+    `;
+    // Show back button if not first question
+    backBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
+
+    // Add event listeners to answers
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dept = btn.getAttribute('data-dept');
+        scores[dept]++;
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestions) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      });
+    });
+  }
+
+  // Go back to previous question
+  backBtn.addEventListener('click', () => {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      // We need to decrease score for previous answer:
+      // However, without tracking history, this is complex.
+      // So for simplicity, restart scores and recalc:
+      recalcScoresUpTo(currentQuestionIndex);
+      showQuestion();
+    }
+  });
+
+  // We need to track selected answers history for accurate back button scoring:
+  let answerHistory = [];
+
+  // Modified showQuestion and answer click logic to track answers:
+
+  function showQuestion() {
+    const qObj = questions[currentQuiz][currentQuestionIndex];
+    quizEl.innerHTML = `
+      <div class="question">${qObj.question}</div>
+      <div class="answers" role="list">
+        ${qObj.answers.map(
+          (ans, i) =>
+            `<button class="answer-btn" role="listitem" data-dept="${ans.dept}" data-index="${i}" aria-label="${ans.text}">${ans.text}</button>`
+        ).join('')}
+      </div>
+    `;
+    backBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
+
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dept = btn.getAttribute('data-dept');
+        // Save answer
+        answerHistory[currentQuestionIndex] = dept;
+        // Recalculate scores based on answers so far
+        recalcScoresUpTo(currentQuestionIndex + 1);
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestions) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      });
+    });
+  }
+
+  // Recalculate scores based on answerHistory up to given question count
+  function recalcScoresUpTo(qCount) {
+    initScores();
+    for (let i = 0; i < qCount; i++) {
+      const dept = answerHistory[i];
+      if (dept) scores[dept]++;
     }
   }
-  showQuestion();
-});
 
-// Start buttons
-document.getElementById('start-london').addEventListener('click', () => startQuiz('london'));
-document.getElementById('start-kp2').addEventListener('click', () => startQuiz('kp2'));
+  // Show result screen with department recommendation(s)
+  function showResult() {
+    quizEl.style.display = 'none';
+    backBtn.style.display = 'none';
+    resultEl.style.display = 'block';
+    clearConfetti();
+    const maxScore = Math.max(...Object.values(scores));
+    const topDepts = Object.keys(scores).filter(d => scores[d] === maxScore);
 
-function runConfetti() {
-  if (!confettiInstance) return;
-  const duration = 5 * 1000;
-  const end = Date.now() + duration;
-
-  (function frame() {
-    confettiInstance({
-      particleCount: 5,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 },
-      colors: ['#8e24aa', '#ffd700', '#3c1361']
+    // Build result HTML
+    let resultHTML = `<h2>Your ideal department${topDepts.length > 1 ? 's' : ''} to serve in:</h2><ul>`;
+    topDepts.forEach(dept => {
+      const desc = departmentDescriptions[dept] || "Description coming soon.";
+      resultHTML += `<li><strong>${dept}</strong>: ${desc}</li>`;
     });
-    confettiInstance({
-      particleCount: 5,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 },
-      colors: ['#8e24aa', '#ffd700', '#3c1361']
-    });
+    resultHTML += '</ul><button id="restart-btn">Take the quiz again</button>';
 
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
+    resultEl.innerHTML = resultHTML;
+
+    // Confetti effect (simple version)
+    startConfetti();
+
+    // Restart button event
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      showStartScreen();
+    });
+  }
+
+  // Confetti functions (simple canvas confetti)
+
+  let confettiInterval = null;
+  function startConfetti() {
+    if (confettiInterval) return;
+    const confettiColors = ['#00A1FF', '#FF0044', '#FFB700', '#00FF00', '#FF00FF'];
+    const canvas = document.createElement('canvas');
+    canvas.id = 'confetti-canvas';
+    canvas.style.position = 'fixed';
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = 9999;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const pieces = [];
+    const numPieces = 150;
+    for (let i = 0; i < numPieces; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * numPieces,
+        color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+        tilt: Math.floor(Math.random() * 10) - 10,
+        tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
+        tiltAngle: 0,
+      });
     }
-  })();
-}
-</script>
+
+    let angle = 0;
+    confettiInterval = setInterval(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      angle += 0.01;
+      for (let i = 0; i < numPieces; i++) {
+        const p = pieces[i];
+        p.tiltAngle += p.tiltAngleIncremental;
+        p.y += (Math.cos(angle + p.d) + 3 + p.r / 2) / 2;
+        p.x += Math.sin(angle);
+        p.tilt = Math.sin(p.tiltAngle) * 15;
+
+        ctx.beginPath();
+        ctx.lineWidth = p.r / 2;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 4, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 4);
+        ctx.stroke();
+
+        if (p.y > canvas.height) {
+          p.x = Math.random() * canvas.width;
+          p.y = -10;
+        }
+      }
+    }, 20);
+  }
+
+  function clearConfetti() {
+    if (confettiInterval) {
+      clearInterval(confettiInterval);
+      confettiInterval = null;
+      const canvas = document.getElementById('confetti-canvas');
+      if (canvas) document.body.removeChild(canvas);
+    }
+  }
+
+  // Initial screen
+  showStartScreen();
+
+  // Expose startQuiz to global scope for buttons
+  window.startQuiz = startQuiz;
+
+})();</script>
 </body>
 </html>
