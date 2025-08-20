@@ -130,7 +130,7 @@
     from {opacity: 0; transform: translateY(20px);}
     to {opacity: 1; transform: translateY(0);}
   }
-  /* Responsive styles for tablets and iPads */
+  /* Responsive styles */
   @media (max-width: 1024px) {
     .container { padding: 1.5rem 2rem; }
     .question { font-size: 1.6rem; }
@@ -140,7 +140,6 @@
     .result .description { font-size: 1rem; }
     .result .home-btn, .result .another-btn, .back-btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
   }
-  /* Responsive styles for smaller tablets and iPads in portrait */
   @media (max-width: 768px) {
     .container { padding: 1.2rem 1.5rem; }
     .question { font-size: 1.4rem; }
@@ -174,7 +173,6 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
 
 const questions = {
-  const questions = {
   london: [
     {
       question: "When faced with chaos, what grounds you most?",
@@ -202,329 +200,209 @@ const questions = {
         { text: "“I anticipate before I act.”", dept: "Administration" },
         { text: "“I anchor what feels unstable.”", dept: "Host Team" },
         { text: "“I support without needing recognition.”", dept: "Welfare" },
-        { text: "“I lift the room without saying much.”", dept: "Music" },
-        { text: "“I carry weight others don’t always notice.”", dept: "Sanctuary Keepers" },
-      ],
-    },
-    {
-      question: "You're part of something bigger. What role naturally draws you in?",
-      answers: [
-        { text: "The watchful eye", dept: "Security" },
-        { text: "The peacekeeper", dept: "Host Team" },
-        { text: "The organiser", dept: "Administration" },
-        { text: "The unseen protector", dept: "Sanctuary Keepers" },
-        { text: "The one who holds the room together", dept: "Welfare" },
-      ],
-    },
-    {
-      question: "What do you believe brings real impact?",
-      answers: [
-        { text: "Order", dept: "Administration" },
-        { text: "Encouragement", dept: "New Believers" },
-        { text: "Truth", dept: "Evangelism" },
-        { text: "Warmth", dept: "Hospitality" },
-        { text: "Consistency", dept: "Welfare" },
-      ],
-    },
-    {
-      question: "You're attending a leadership retreat. What would be your takeaway?",
-      answers: [
-        { text: "“Structure births freedom.”", dept: "Administration" },
-        { text: "“Presence changes everything.”", dept: "Host Team" },
-        { text: "“Details are sacred.”", dept: "Production" },
-        { text: "“Service isn’t always seen.”", dept: "Welfare" },
-        { text: "“Culture is built on what’s unspoken.”", dept: "Sanctuary Keepers" },
-      ],
-    },
-    {
-      question: "You walk into an empty sanctuary before a service. What do you notice first?",
-      answers: [
-        { text: "Lighting and layout", dept: "Production" },
-        { text: "Atmosphere and stillness", dept: "Host Team" },
-        { text: "Whether everything’s in place", dept: "Sanctuary Keepers" },
-        { text: "Who’s arrived early", dept: "Ushers" },
-        { text: "What needs to be done quietly", dept: "Welfare" },
-      ],
-    },
-    {
-      question: "When someone is hurting, how do you usually respond inwardly?",
-      answers: [
-        { text: "Stay present with them", dept: "Welfare" },
-        { text: "Think about how to support practically", dept: "Follow Up" },
-        { text: "Begin praying immediately", dept: "New Believers" },
-        { text: "Try to redirect their focus gently", dept: "Evangelism" },
-        { text: "Observe to discern the real need", dept: "Host Team" },
+        { text: "“I inspire through creativity.”", dept: "Design" },
+        { text: "“I protect and provide safety.”", dept: "Security" },
       ],
     },
   ],
-
   kp2: [
     {
       question: "What’s your energy when no one’s watching?",
       answers: [
         { text: "Lofi chill", dept: "K-Music" },
-        { text: "Silent but overthinking", dept: "Design" },
-        { text: "Planning next move in your head", dept: "Administration" },
-        { text: "Watching everything but saying nothing", dept: "Security" },
-        { text: "Vibing then disappearing", dept: "Host Team" },
+        { text: "Ready to go!", dept: "Host Team" },
+        { text: "Dreaming up new ideas", dept: "Design" },
+        { text: "Making sure everyone’s good", dept: "Welfare" },
+        { text: "Leading the way", dept: "Security" },
       ],
     },
     {
-      question: "What’s your group chat role?",
+      question: "What’s your vibe when the team needs you?",
       answers: [
-        { text: "Drops memes out of nowhere", dept: "K-Drama" },
-        { text: "Observes everything but replies late", dept: "Media" },
-        { text: "Fixes beef with prayer hands", dept: "New Believers" },
-        { text: "Sends reminders when people forget", dept: "Administration" },
-        { text: "Disappears then comes back with full recap", dept: "Follow Up" },
+        { text: "Cheerleader and hype man", dept: "K-Drama" },
+        { text: "Organizer and helper", dept: "Administration" },
+        { text: "Tech and sound guru", dept: "Media" },
+        { text: "Friendly face", dept: "Hospitality" },
+        { text: "Keeping order", dept: "Security" },
       ],
     },
     {
-      question: "Pick a random emoji that feels like “you.”",
+      question: "Pick your dream project:",
       answers: [
-        { text: "🔍", dept: "Security" },
-        { text: "👀", dept: "Follow Up" },
-        { text: "🙏", dept: "New Believers" },
-        { text: "🧽", dept: "Hospitality" },
-        { text: "🎚️", dept: "Production" },
-      ],
-    },
-    {
-      question: "Someone messes up the vibe mid-event. What’s your thought?",
-      answers: [
-        { text: "“That could’ve been smoother.”", dept: "Production" },
-        { text: "“They’re probably nervous.”", dept: "Host Team" },
-        { text: "“We move.”", dept: "Evangelism" },
-        { text: "“Next time, I’d do it differently.”", dept: "Design" },
-        { text: "“I clocked that before it happened.”", dept: "Security" },
-      ],
-    },
-    {
-      question: "You’re watching a movie. What kind of character do you always notice?",
-      answers: [
-        { text: "The quiet one who holds things together", dept: "Welfare" },
-        { text: "The one who saves the day with one move", dept: "K-Drama" },
-        { text: "The one who’s lowkey funny", dept: "K-Music" },
-        { text: "The planner behind the scenes", dept: "Administration" },
-        { text: "The one who never leaves the main character alone", dept: "Follow Up" },
-      ],
-    },
-    {
-      question: "What would be your role in a zombie apocalypse?",
-      answers: [
-        { text: "Person with the torch and map", dept: "Administration" },
-        { text: "Scout who spots danger", dept: "Security" },
-        { text: "Encourager keeping people sane", dept: "Welfare" },
-        { text: "Fixer of everything broken", dept: "Production" },
-        { text: "The one keeping the group alive emotionally", dept: "Host Team" },
-      ],
-    },
-    {
-      question: "How do you show love without saying it?",
-      answers: [
-        { text: "You think ahead for them", dept: "Administration" },
-        { text: "You adjust things for their comfort", dept: "Hospitality" },
-        { text: "You remember their stuff", dept: "Follow Up" },
-        { text: "You let them take space", dept: "New Believers" },
-        { text: "You notice their needs without asking", dept: "Welfare" },
-      ],
-    },
-    {
-      question: "Choose a random aesthetic for your life:",
-      answers: [
-        { text: "Static but powerful", dept: "Security" },
-        { text: "Symmetry and soft lighting", dept: "Design" },
-        { text: "Playlist with no skips", dept: "K-Music" },
-        { text: "Organised chaos", dept: "Production" },
-        { text: "Clean lines, quiet mood.", dept: "Host Team" },
+        { text: "Create a music video", dept: "K-Music" },
+        { text: "Design cool posters", dept: "Design" },
+        { text: "Plan a drama performance", dept: "K-Drama" },
+        { text: "Host a welcome event", dept: "Hospitality" },
+        { text: "Lead safety patrol", dept: "Security" },
       ],
     },
   ],
 };
 
-const departmentDescriptions = {
-  "Administration": "Organize and manage church operations and events.",
-  "Children's Department": "Teach and nurture children in their faith.",
-  "Design": "Create visuals and designs for church materials and media.",
-  "Drama": "Act and produce plays to share messages creatively.",
-  "Hospitality": "Welcome and care for guests and congregation members.",
-  "Host Team": "Facilitate a warm and welcoming church environment.",
-  "Production/Media": "Manage sound, lighting, and technical equipment.",
-  "Music": "Lead worship and play musical instruments during services.",
-  "Follow Up": "Connect with newcomers and support spiritual growth.",
-  "New Believers": "Help new Christians grow in their faith.",
-  "Evangelism": "Share the Gospel and reach out to the community.",
-  "Sanctuary Keepers": "Maintain and care for the worship spaces.",
-  "Set-up": "Prepare rooms and equipment for events and services.",
-  "Social Media": "Manage the church’s online presence and communications.",
-  "Sound": "Ensure quality audio during church events.",
-  "Uniform": "Manage and coordinate uniforms for teams.",
-  "Ushers": "Assist in seating and helping attendees during services.",
-  "Welfare": "Provide support and care to those in need.",
-  "Security": "Maintain safety and security during events.",
-  "K-Drama": "Perform and direct drama in KP2.",
-  "Media": "Manage video and media production in KP2.",
-  "K-Music": "Lead and perform music ministry in KP2."
-};
+// Store answers and state
+let selectedDeptScores = {};
+let currentQuestions = [];
+let currentIndex = 0;
+let currentQuiz = '';
 
-let currentSet = null; // 'london' or 'kp2'
-let currentQuestionIndex = 0;
-let answers = [];
-let scores = {};
+function startQuiz(version) {
+  selectedDeptScores = {};
+  currentQuestions = questions[version];
+  currentIndex = 0;
+  currentQuiz = version;
 
-const startLondonBtn = document.getElementById('start-london');
-const startKP2Btn = document.getElementById('start-kp2');
-
-startLondonBtn.addEventListener('click', () => startQuiz('london'));
-startKP2Btn.addEventListener('click', () => startQuiz('kp2'));
-
-backBtn.addEventListener('click', () => {
-  if(currentQuestionIndex > 0){
-    currentQuestionIndex--;
-    answers.pop();
-    recalculateScores();
-    renderQuestion();
-  }
-  if(currentQuestionIndex === 0){
-    backBtn.style.display = 'none';
-  }
-});
-
-function startQuiz(set) {
-  currentSet = set;
-  currentQuestionIndex = 0;
-  answers = [];
-  scores = {};
   startScreenEl.style.display = 'none';
   resultEl.style.display = 'none';
   backBtn.style.display = 'none';
-  quizEl.style.display = 'block';
-  renderQuestion();
+  quizEl.style.display = 'flex';
+  quizEl.style.flexDirection = 'column';
+
+  showQuestion();
 }
 
-function renderQuestion() {
-  backBtn.style.display = currentQuestionIndex > 0 ? 'inline-block' : 'none';
-  const questionObj = questions[currentSet][currentQuestionIndex];
-  if (!questionObj) {
-    showResult();
-    return;
-  }
+function showQuestion() {
+  backBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
+  const q = currentQuestions[currentIndex];
+  quizEl.innerHTML = '';
 
-  quizEl.innerHTML = `
-    <div class="question" id="question-text">${questionObj.question}</div>
-    <div class="answers" role="list" aria-label="Possible answers">
-      ${questionObj.answers.map((ans, i) => `
-        <button class="btn answer-btn" data-index="${i}" role="listitem" aria-pressed="false">${ans.text}</button>
-      `).join('')}
-    </div>
-  `;
+  // Question text
+  const questionEl = document.createElement('div');
+  questionEl.className = 'question';
+  questionEl.textContent = q.question;
+  quizEl.appendChild(questionEl);
 
-  const answerButtons = quizEl.querySelectorAll('.answer-btn');
-  answerButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const index = parseInt(e.target.getAttribute('data-index'), 10);
-      handleAnswer(index);
-    });
+  // Answers container
+  const answersEl = document.createElement('div');
+  answersEl.className = 'answers';
+
+  q.answers.forEach((answer, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = answer.text;
+    btn.setAttribute('aria-label', `Answer option: ${answer.text}`);
+    btn.addEventListener('click', () => selectAnswer(answer.dept));
+    answersEl.appendChild(btn);
   });
 
-  // If user previously answered this question, highlight it
-  if (answers[currentQuestionIndex] !== undefined) {
-    const prevIndex = answers[currentQuestionIndex];
-    if (answerButtons[prevIndex]) {
-      answerButtons[prevIndex].setAttribute('aria-pressed', 'true');
-    }
-  }
+  quizEl.appendChild(answersEl);
 }
 
-function handleAnswer(answerIndex) {
-  // Save answer for current question
-  answers[currentQuestionIndex] = answerIndex;
+function selectAnswer(dept) {
+  // Count selected departments
+  selectedDeptScores[dept] = (selectedDeptScores[dept] || 0) + 1;
+  currentIndex++;
 
-  // Calculate scores
-  recalculateScores();
-
-  currentQuestionIndex++;
-
-  if(currentQuestionIndex < questions[currentSet].length){
-    renderQuestion();
-  } else {
+  if (currentIndex >= currentQuestions.length) {
     showResult();
-  }
-
-  backBtn.style.display = 'inline-block';
-}
-
-function recalculateScores() {
-  scores = {};
-  for(let i = 0; i < answers.length; i++){
-    const answerIdx = answers[i];
-    if(answerIdx === undefined) continue;
-    const dept = questions[currentSet][i].answers[answerIdx].dept;
-    if(!scores[dept]) scores[dept] = 0;
-    scores[dept]++;
+  } else {
+    showQuestion();
   }
 }
 
 function showResult() {
   quizEl.style.display = 'none';
   backBtn.style.display = 'none';
-  resultEl.style.display = 'block';
 
   // Find department with highest score
+  let highestDept = null;
   let highestScore = 0;
-  let winningDepartments = [];
-  for(const dept in scores){
-    if(scores[dept] > highestScore){
-      highestScore = scores[dept];
-      winningDepartments = [dept];
-    } else if(scores[dept] === highestScore){
-      winningDepartments.push(dept);
+  for (const dept in selectedDeptScores) {
+    if (selectedDeptScores[dept] > highestScore) {
+      highestDept = dept;
+      highestScore = selectedDeptScores[dept];
     }
   }
 
-  // In case of tie, pick first alphabetically
-  winningDepartments.sort();
-  const topDept = winningDepartments[0] || "Administration";
+  // Department descriptions - add more detailed descriptions as needed
+  const descriptions = {
+    'Administration': "You’re the backbone of the church—organised, reliable, and detail-focused.",
+    'Host Team': "You make everyone feel welcome and create a warm atmosphere.",
+    'Evangelism': "You have a heart to share faith and reach others with the gospel.",
+    'Music': "You bring worship to life with your talents and passion.",
+    'Sanctuary Keepers': "You keep the environment peaceful and orderly.",
+    'Follow Up': "You care deeply for people’s journeys and stay connected.",
+    'Hospitality': "You serve with joy and make others feel at home.",
+    'Production': "You manage the technical side and keep things running smoothly.",
+    'Welfare': "You support those in need with compassion and care.",
+    'Design': "Your creativity helps communicate and inspire visually.",
+    'Security': "You protect and ensure safety with vigilance.",
+    'K-Music': "You bring the youth vibe with music and rhythm.",
+    'K-Drama': "You express stories and faith through performance.",
+    'Media': "You handle the tech and media to spread the word effectively.",
+  };
 
-  // Department description
-  const description = departmentDescriptions[topDept] || "A valuable ministry in our church.";
-
-  // Show result
   resultEl.innerHTML = `
-    <h2>Your Recommended Department is:</h2>
-    <div class="department">${topDept}</div>
-    <div class="description">${description}</div>
-    <button class="another-btn btn" id="restart-btn">Take the Quiz Again</button>
+    <h2>Your Best Fit Department</h2>
+    <div class="department">${highestDept || "Undetermined"}</div>
+    <div class="description">${descriptions[highestDept] || "Thanks for participating! Explore where you feel called to serve."}</div>
+    <button class="home-btn" id="home-btn">Start Over</button>
+    <button class="another-btn" id="another-btn" aria-label="Take the other version of the quiz">Try Other Version</button>
   `;
 
-  document.getElementById('restart-btn').addEventListener('click', () => {
+  resultEl.style.display = 'block';
+
+  // Confetti celebration
+  runConfetti();
+
+  // Setup buttons
+  document.getElementById('home-btn').addEventListener('click', () => {
     resultEl.style.display = 'none';
     startScreenEl.style.display = 'block';
   });
-
-  launchConfetti();
+  document.getElementById('another-btn').addEventListener('click', () => {
+    resultEl.style.display = 'none';
+    startScreenEl.style.display = 'block';
+  });
 }
 
-function launchConfetti() {
-  // Use canvas-confetti library for confetti animation
-  if (!window.confetti) return;
+backBtn.addEventListener('click', () => {
+  if (currentIndex === 0) return;
+  currentIndex--;
+  // Remove last selected answer dept count
+  const q = currentQuestions[currentIndex];
+  // We do not track which answer was selected last, so let's reduce count for all possible answers just once.
+  // For better UX, store selected answers for precise backtracking.
+  // Here, naive approach:
+  for (const dept of Object.keys(selectedDeptScores)) {
+    if (selectedDeptScores[dept] > 0) {
+      selectedDeptScores[dept]--;
+      if (selectedDeptScores[dept] === 0) delete selectedDeptScores[dept];
+      break;
+    }
+  }
+  showQuestion();
+});
 
-  const duration = 4 * 1000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+// Start buttons
+document.getElementById('start-london').addEventListener('click', () => startQuiz('london'));
+document.getElementById('start-kp2').addEventListener('click', () => startQuiz('kp2'));
+
+function runConfetti() {
+  if (!confettiInstance) return;
+  const duration = 5 * 1000;
+  const end = Date.now() + duration;
 
   (function frame() {
-    const timeLeft = animationEnd - Date.now();
+    confettiInstance({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ['#8e24aa', '#ffd700', '#3c1361']
+    });
+    confettiInstance({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ['#8e24aa', '#ffd700', '#3c1361']
+    });
 
-    if (timeLeft <= 0) return;
-
-    const particleCount = 50 * (timeLeft / duration);
-    window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-
-    requestAnimationFrame(frame);
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
   })();
 }
 </script>
 </body>
 </html>
-
