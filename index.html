@@ -174,70 +174,172 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
 
 const questions = {
+  const questions = {
   london: [
     {
       question: "When faced with chaos, what grounds you most?",
       answers: [
         { text: "A plan", dept: "Administration" },
         { text: "A calm presence", dept: "Host Team" },
-        { text: "A Purpose", dept: "Evangelism/New Believers" },
-        { text: "To offer warmth to everyone", dept: "Hospitality" },
+        { text: "A purpose", dept: "Evangelism" },
+        { text: "A clear voice", dept: "Music" },
         { text: "A reset moment", dept: "Sanctuary Keepers" },
       ],
     },
     {
       question: "In conversations, what do you often find yourself doing most?",
       answers: [
-        { text: "Working behind the scenes to produce excellent events", dept: "Production" },
-        { text: "Leading or playing music that touches hearts", dept: "Music" },
-        { text: "Reaching out and following up with new people", dept: "Follow Up" },
-        { text: "Helping new believers grow in faith", dept: "New Believers" },
-        { text: "Sharing the good news through evangelism", dept: "Evangelism" },
+        { text: "Listening for what’s not being said", dept: "Follow Up" },
+        { text: "Offering clarity or solutions", dept: "Administration" },
+        { text: "Making others feel comfortable", dept: "Hospitality" },
+        { text: "Observing the energy in the room", dept: "Production" },
+        { text: "Remembering the little details", dept: "Welfare" },
       ],
     },
     {
-      question: "How do you nurture your faith during your personal time?",
+      question: "Which phrase resonates most with how you move through life?",
       answers: [
-        { text: "Protecting and caring for the sanctuary and holy places", dept: "Sanctuary Keepers" },
-        { text: "Organising and keeping things orderly", dept: "Administration" },
-        { text: "Supporting the welfare of others", dept: "Welfare" },
-        { text: "Creating engaging content for social media", dept: "Social Media" },
-        { text: "Helping in children's ministry", dept: "Children's Department" },
+        { text: "“I anticipate before I act.”", dept: "Administration" },
+        { text: "“I anchor what feels unstable.”", dept: "Host Team" },
+        { text: "“I support without needing recognition.”", dept: "Welfare" },
+        { text: "“I lift the room without saying much.”", dept: "Music" },
+        { text: "“I carry weight others don’t always notice.”", dept: "Sanctuary Keepers" },
+      ],
+    },
+    {
+      question: "You're part of something bigger. What role naturally draws you in?",
+      answers: [
+        { text: "The watchful eye", dept: "Security" },
+        { text: "The peacekeeper", dept: "Host Team" },
+        { text: "The organiser", dept: "Administration" },
+        { text: "The unseen protector", dept: "Sanctuary Keepers" },
+        { text: "The one who holds the room together", dept: "Welfare" },
+      ],
+    },
+    {
+      question: "What do you believe brings real impact?",
+      answers: [
+        { text: "Order", dept: "Administration" },
+        { text: "Encouragement", dept: "New Believers" },
+        { text: "Truth", dept: "Evangelism" },
+        { text: "Warmth", dept: "Hospitality" },
+        { text: "Consistency", dept: "Welfare" },
+      ],
+    },
+    {
+      question: "You're attending a leadership retreat. What would be your takeaway?",
+      answers: [
+        { text: "“Structure births freedom.”", dept: "Administration" },
+        { text: "“Presence changes everything.”", dept: "Host Team" },
+        { text: "“Details are sacred.”", dept: "Production" },
+        { text: "“Service isn’t always seen.”", dept: "Welfare" },
+        { text: "“Culture is built on what’s unspoken.”", dept: "Sanctuary Keepers" },
+      ],
+    },
+    {
+      question: "You walk into an empty sanctuary before a service. What do you notice first?",
+      answers: [
+        { text: "Lighting and layout", dept: "Production" },
+        { text: "Atmosphere and stillness", dept: "Host Team" },
+        { text: "Whether everything’s in place", dept: "Sanctuary Keepers" },
+        { text: "Who’s arrived early", dept: "Ushers" },
+        { text: "What needs to be done quietly", dept: "Welfare" },
+      ],
+    },
+    {
+      question: "When someone is hurting, how do you usually respond inwardly?",
+      answers: [
+        { text: "Stay present with them", dept: "Welfare" },
+        { text: "Think about how to support practically", dept: "Follow Up" },
+        { text: "Begin praying immediately", dept: "New Believers" },
+        { text: "Try to redirect their focus gently", dept: "Evangelism" },
+        { text: "Observe to discern the real need", dept: "Host Team" },
       ],
     },
   ],
+
   kp2: [
     {
-      question: "Which environment energizes you the most?",
+      question: "What’s your energy when no one’s watching?",
       answers: [
-        { text: "Organising and administration", dept: "Administration" },
-        { text: "Creating eye-catching designs", dept: "Design" },
-        { text: "Performing in drama", dept: "K-Drama" },
-        { text: "Welcoming guests warmly", dept: "Hospitality" },
-        { text: "Security and protection", dept: "Security" },
+        { text: "Lofi chill", dept: "K-Music" },
+        { text: "Silent but overthinking", dept: "Design" },
+        { text: "Planning next move in your head", dept: "Administration" },
+        { text: "Watching everything but saying nothing", dept: "Security" },
+        { text: "Vibing then disappearing", dept: "Host Team" },
       ],
     },
     {
-      question: "What's your role when serving in a team?",
+      question: "What’s your group chat role?",
       answers: [
-        { text: "Leading worship or playing music", dept: "K-Music" },
-        { text: "Managing social media and media content", dept: "Media/Social Media" },
-        { text: "Supporting setup and teardown", dept: "Set-up" },
-        { text: "Helping new believers and evangelism", dept: "New Believers/Evangelism" },
-        { text: "Assisting with hospitality and guest hosting", dept: "Hospitality/Host Team" },
+        { text: "Drops memes out of nowhere", dept: "K-Drama" },
+        { text: "Observes everything but replies late", dept: "Media" },
+        { text: "Fixes beef with prayer hands", dept: "New Believers" },
+        { text: "Sends reminders when people forget", dept: "Administration" },
+        { text: "Disappears then comes back with full recap", dept: "Follow Up" },
       ],
     },
     {
-      question: "Which activity do you find most fulfilling?",
+      question: "Pick a random emoji that feels like “you.”",
       answers: [
-        { text: "Providing welfare and care", dept: "Welfare" },
-        { text: "Helping with ushering and welcoming", dept: "Ushers" },
-        { text: "Ensuring sound and production quality", dept: "Sound" },
-        { text: "Participating in follow up ministry", dept: "Follow Up" },
-        { text: "Working behind the scenes in administration", dept: "Administration" },
+        { text: "🔍", dept: "Security" },
+        { text: "👀", dept: "Follow Up" },
+        { text: "🙏", dept: "New Believers" },
+        { text: "🧽", dept: "Hospitality" },
+        { text: "🎚️", dept: "Production" },
       ],
     },
-  ]
+    {
+      question: "Someone messes up the vibe mid-event. What’s your thought?",
+      answers: [
+        { text: "“That could’ve been smoother.”", dept: "Production" },
+        { text: "“They’re probably nervous.”", dept: "Host Team" },
+        { text: "“We move.”", dept: "Evangelism" },
+        { text: "“Next time, I’d do it differently.”", dept: "Design" },
+        { text: "“I clocked that before it happened.”", dept: "Security" },
+      ],
+    },
+    {
+      question: "You’re watching a movie. What kind of character do you always notice?",
+      answers: [
+        { text: "The quiet one who holds things together", dept: "Welfare" },
+        { text: "The one who saves the day with one move", dept: "K-Drama" },
+        { text: "The one who’s lowkey funny", dept: "K-Music" },
+        { text: "The planner behind the scenes", dept: "Administration" },
+        { text: "The one who never leaves the main character alone", dept: "Follow Up" },
+      ],
+    },
+    {
+      question: "What would be your role in a zombie apocalypse?",
+      answers: [
+        { text: "Person with the torch and map", dept: "Administration" },
+        { text: "Scout who spots danger", dept: "Security" },
+        { text: "Encourager keeping people sane", dept: "Welfare" },
+        { text: "Fixer of everything broken", dept: "Production" },
+        { text: "The one keeping the group alive emotionally", dept: "Host Team" },
+      ],
+    },
+    {
+      question: "How do you show love without saying it?",
+      answers: [
+        { text: "You think ahead for them", dept: "Administration" },
+        { text: "You adjust things for their comfort", dept: "Hospitality" },
+        { text: "You remember their stuff", dept: "Follow Up" },
+        { text: "You let them take space", dept: "New Believers" },
+        { text: "You notice their needs without asking", dept: "Welfare" },
+      ],
+    },
+    {
+      question: "Choose a random aesthetic for your life:",
+      answers: [
+        { text: "Static but powerful", dept: "Security" },
+        { text: "Symmetry and soft lighting", dept: "Design" },
+        { text: "Playlist with no skips", dept: "K-Music" },
+        { text: "Organised chaos", dept: "Production" },
+        { text: "Clean lines, quiet mood.", dept: "Host Team" },
+      ],
+    },
+  ],
 };
 
 const departmentDescriptions = {
@@ -247,7 +349,7 @@ const departmentDescriptions = {
   "Drama": "Act and produce plays to share messages creatively.",
   "Hospitality": "Welcome and care for guests and congregation members.",
   "Host Team": "Facilitate a warm and welcoming church environment.",
-  "Production": "Manage sound, lighting, and technical equipment.",
+  "Production/Media": "Manage sound, lighting, and technical equipment.",
   "Music": "Lead worship and play musical instruments during services.",
   "Follow Up": "Connect with newcomers and support spiritual growth.",
   "New Believers": "Help new Christians grow in their faith.",
@@ -425,3 +527,4 @@ function launchConfetti() {
 </script>
 </body>
 </html>
+
