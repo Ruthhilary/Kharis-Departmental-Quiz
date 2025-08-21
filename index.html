@@ -195,10 +195,8 @@
   const backBtn = document.getElementById('back-btn');
   const confettiCanvas = document.getElementById('confetti-canvas');
 
-  // Confetti instance
   const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
 
-  // Quiz questions for each version
   const questions = {
     london: [
       {
@@ -207,161 +205,152 @@
           { text: "A plan", dept: "Administration" },
           { text: "A calm presence", dept: "Welfare" },
           { text: "Creative expression", dept: "Design" },
-          { text: "Leadership and direction", dept: "Host Team" },
-           { text: "Sit back and think", dept: "Production" }    
-   
+          { text: "A loud song", dept: "Music" }
         ]
       },
       {
-        question: "What energizes you the most?",
+        question: "How do you prefer to impact others?",
         answers: [
-          { text: "Engaging children with stories and fun", dept: "Children's Department" },
-          { text: "Organising the environment", dept: "Set-up" },
-          { text: "Speaking to new people", dept: "Evangelism" },
-          { text: "Music/Beats", dept: "Sound" },
-          { text: "Making sure everyone is in a safe environment", dept: "Security" }
-
+          { text: "Organizing events", dept: "Hospitality" },
+          { text: "Welcoming newcomers", dept: "Host Team" },
+          { text: "Sharing inspiring stories", dept: "Drama" },
+          { text: "Practical help", dept: "Sanctuary Keepers" }
         ]
       },
       {
-        question: "How do you prefer to serve in worship?",
+        question: "In a group, you are the one who:",
         answers: [
-          { text: "Leading and singing/Playing", dept: "Music" },
-          { text: "Capturing the Experience", dept: "Production" },
-          { text: "Maintaing peoples wealth", dept: "Hospitality" },
-          { text: "Representing and Welcoming People", dept: "Ushers" }
+          { text: "Keeps track of details", dept: "Administration" },
+          { text: "Comforts and encourages", dept: "Welfare" },
+          { text: "Handles lights and sound", dept: "Production" },
+          { text: "Greets and guides people", dept: "Ushers" }
         ]
       },
       {
-        question: "What role would you enjoy most in the church community?",
+        question: "Which best describes your spiritual gift?",
         answers: [
-          { text: "Making sure New Believers feel Welcomed and Encouraged", dept: "Follow Up" },
-          { text: "Performing/Acting out", dept: "Drama" },
-          { text: "Spreading the word everywhere", dept: "Social Media" },
-          { text: "Making sure everyone looks their Best ", dept: "Uniform" }
+          { text: "Teaching", dept: "Follow Up" },
+          { text: "Encouragement", dept: "New Believers" },
+          { text: "Evangelism", dept: "Evangelism" },
+          { text: "Service", dept: "Set-up" }
         ]
       }
     ],
     kp2: [
       {
-        question: "What vibe fits you best on a Sunday?",
+        question: "What’s your vibe on a weekend?",
         answers: [
-          { text: "Energetic and welcoming", dept: "Host Team" },
-          { text: "Creative and artistic", dept: "K-Drama" },
-          { text: "Music and rhythm", dept: "K-Music" },
-          { text: "Helping others and caring", dept: "Welfare" }
+          { text: "Chilling with friends", dept: "Hospitality" },
+          { text: "Creating art or music", dept: "K-Music" },
+          { text: "Helping others out", dept: "Welfare" },
+          { text: "Being on stage or drama", dept: "K-Drama" }
         ]
       },
       {
-        question: "Which activity would you be most excited to join?",
+        question: "Your friends describe you as:",
         answers: [
-          { text: "Social media and making cool content", dept: "Social Media" },
-          { text: "Setting up equipment and tech", dept: "Sound" },
+          { text: "Organized and dependable", dept: "Administration" },
+          { text: "Outgoing and welcoming", dept: "Host Team" },
+          { text: "Tech-savvy", dept: "Media" },
+          { text: "Loyal and protective", dept: "Security" }
+        ]
+      },
+      {
+        question: "Which sounds most like you in church?",
+        answers: [
+          { text: "Singing your heart out", dept: "K-Music" },
           { text: "Helping new people feel at home", dept: "Follow Up" },
-          { text: "Making sure everything runs smoothly", dept: "Administration" }
+          { text: "Telling others about Jesus", dept: "Evangelism" },
+          { text: "Making sure everything runs smooth", dept: "Set-up" }
         ]
       },
       {
-        question: "Pick the best way to serve others",
+        question: "You’d rather be:",
         answers: [
-          { text: "Running games and kids' activities", dept: "Children's Department" },
-          { text: "Welcoming and ushering", dept: "Ushers" },
-          { text: "Being part of drama team", dept: "K-Drama" },
-          { text: "Leading worship music", dept: "K-Music" }
-        ]
-      },
-      {
-        question: "What's your strongest skill?",
-        answers: [
-          { text: "Organizing and planning", dept: "Administration" },
-          { text: "Making videos and graphics", dept: "Design" },
-          { text: "Caring for people", dept: "Welfare" },
-          { text: "Security and safety", dept: "Security" }
+          { text: "Behind the scenes making videos", dept: "Media" },
+          { text: "Greeting people at the door", dept: "Ushers" },
+          { text: "Ensuring safety", dept: "Security" },
+          { text: "Helping kids learn and have fun", dept: "Children's Department" }
         ]
       }
     ]
   };
 
-  // Departments descriptions for result display
+  // Department descriptions (can add more)
   const departmentDescriptions = {
-    // London Departments
-    "Administration": "Keep everything running smoothly by organizing and coordinating church operations.",
-    "Children's Department": "Bring joy and spiritual growth to children with engaging activities and care.",
-    "Design": "Create beautiful visuals and media that inspire and communicate the church’s message.",
-    "Drama": "Use storytelling and performance to bring the gospel to life.",
-    "Hospitality": "Welcome guests warmly and ensure everyone feels at home.",
-    "Host Team": "Lead and manage the flow of services and events with confidence.",
-    "Production": "Handle the technical side like lighting and video for impactful worship.",
-    "Music": "Lift the congregation with inspiring worship music and leading songs.",
-    "Follow Up": "Help new believers grow and stay connected with the church family.",
-    "New Believers": "Support those new in faith with guidance and care.",
-    "Evangelism": "Spread the gospel by engaging with the community and sharing Christ.",
-    "Sanctuary Keepers": "Maintain a sacred, clean, and orderly worship space.",
-    "Set-up": "Prepare rooms and equipment for services and events.",
-    "Social Media": "Share the church’s story online to reach many hearts.",
-    "Sound": "Ensure excellent audio quality so everyone hears clearly.",
-    "Uniform": "Maintain a professional and welcoming appearance for teams.",
-    "Ushers": "Guide guests with a smile, helping them find their place.",
-    "Welfare": "Provide care and practical support to those in need.",
-    // KP2 Departments
-    "K-Drama": "Bring stories to life through performance and creativity for youth.",
-    "K-Music": "Lead vibrant worship tailored for younger hearts and voices.",
-    "Security": "Keep everyone safe during gatherings and events."
+    "Administration": "You have a keen eye for detail and thrive on keeping things organized and running smoothly.",
+    "Children's Department": "You love nurturing and guiding the youngest in the church with kindness and patience.",
+    "Design": "Creative and imaginative, you bring fresh ideas and visuals to life for the church.",
+    "Drama": "You express your faith powerfully through storytelling and performance.",
+    "Evangelism": "Bold and passionate, you love sharing the message of Jesus with others.",
+    "Follow Up": "Caring and patient, you help new believers grow in their faith.",
+    "Hospitality": "Warm and welcoming, you make everyone feel at home.",
+    "Host Team": "Friendly and approachable, you ensure guests have a great experience.",
+    "K-Drama": "Energetic and expressive, you bring stories to life for younger audiences.",
+    "K-Music": "Musically gifted and joyful, you lead worship and praise.",
+    "Media": "Tech-savvy and creative, you help capture and share church moments.",
+    "Music": "You use your voice and instruments to lead others in worship.",
+    "New Believers": "You support and encourage those starting their faith journey.",
+    "Production": "Behind the scenes, you manage lights, sound, and tech to enhance worship.",
+    "Sanctuary Keepers": "You keep the church environment welcoming and orderly.",
+    "Security": "Protective and vigilant, you help keep everyone safe.",
+    "Set-up": "Hardworking and dependable, you ensure all church events are ready to go.",
+    "Ushers": "Friendly guides who help people find their place and feel comfortable.",
+    "Welfare": "Compassionate and kind, you help meet the practical and emotional needs of others.",
   };
 
-  let currentVersion = null;  // 'london' or 'kp2'
+  let currentVersion = null;
   let currentQuestionIndex = 0;
   let answersCount = {};
   let questionHistory = [];
 
-  // Initialize answers count for departments
   function initAnswersCount(version) {
     answersCount = {};
+    // Initialize count to 0 for each department in that version's questions
     const depts = new Set();
     questions[version].forEach(q => q.answers.forEach(a => depts.add(a.dept)));
     depts.forEach(dept => answersCount[dept] = 0);
   }
 
-  // Show start screen
+  // Show the start screen and hide other sections
   function showStart() {
     startScreenEl.style.display = 'block';
     quizEl.style.display = 'none';
-    backBtn.style.display = 'none';
     resultEl.style.display = 'none';
+    backBtn.style.display = 'none';
     currentVersion = null;
     currentQuestionIndex = 0;
+    answersCount = {};
     questionHistory = [];
   }
 
-  // Show a question by index
+  // Show the question at index
   function showQuestion(index) {
-    const questionObj = questions[currentVersion][index];
-    if (!questionObj) return;
-
-    // Clear quiz area
     quizEl.innerHTML = '';
+    const q = questions[currentVersion][index];
+    if (!q) {
+      showResult();
+      return;
+    }
+    const questionEl = document.createElement('h2');
+    questionEl.className = 'question';
+    questionEl.textContent = q.question;
+    questionEl.id = 'question-text';
+    quizEl.appendChild(questionEl);
 
-    // Question text
-    const questionHeading = document.createElement('h2');
-    questionHeading.className = 'question';
-    questionHeading.textContent = questionObj.question;
-    quizEl.appendChild(questionHeading);
-
-    // Answers container
     const answersDiv = document.createElement('div');
     answersDiv.className = 'answers';
-
-    // Create answer buttons
-    questionObj.answers.forEach(({text, dept}, idx) => {
+    answersDiv.setAttribute('role', 'list');
+    q.answers.forEach(answer => {
       const btn = document.createElement('button');
-      btn.textContent = text;
-      btn.setAttribute('aria-label', text + ', select to choose this answer');
+      btn.textContent = answer.text;
+      btn.setAttribute('role', 'listitem');
+      btn.setAttribute('aria-label', `${answer.text}, selects department ${answer.dept}`);
       btn.addEventListener('click', () => {
-        // Record answer
-        answersCount[dept]++;
-        questionHistory.push({ questionIndex: index, selectedDept: dept });
+        // Add to history for backtracking
+        questionHistory.push({ questionIndex: currentQuestionIndex, selectedDept: answer.dept });
+        answersCount[answer.dept]++;
         currentQuestionIndex++;
-        // Show next question or result
         if (currentQuestionIndex < questions[currentVersion].length) {
           showQuestion(currentQuestionIndex);
           backBtn.style.display = 'inline-block';
@@ -375,131 +364,99 @@
 
     quizEl.appendChild(answersDiv);
     quizEl.style.display = 'block';
-
-    // Show/hide back button
-    if (index > 0) {
-      backBtn.style.display = 'inline-block';
-    } else {
-      backBtn.style.display = 'none';
-    }
+    startScreenEl.style.display = 'none';
+    resultEl.style.display = 'none';
   }
 
-  // Show quiz result
+  // Show final result based on answersCount
   function showResult() {
-    startScreenEl.style.display = 'none';
     quizEl.style.display = 'none';
-    backBtn.style.display = 'none';
     resultEl.style.display = 'block';
 
-    // Determine highest scored department(s)
-    const maxScore = Math.max(...Object.values(answersCount));
-    const topDepts = Object.entries(answersCount)
-      .filter(([_, score]) => score === maxScore)
-      .map(([dept]) => dept);
+    // Find department(s) with highest score
+    let maxCount = 0;
+    let topDepartments = [];
+    for (const [dept, count] of Object.entries(answersCount)) {
+      if (count > maxCount) {
+        maxCount = count;
+        topDepartments = [dept];
+      } else if (count === maxCount) {
+        topDepartments.push(dept);
+      }
+    }
 
-    // Pick one department if tie - pick first alphabetically
-    topDepts.sort();
-    const chosenDept = topDepts[0];
+    // If tie, pick randomly
+    const finalDept = topDepartments[Math.floor(Math.random() * topDepartments.length)];
 
-    // Build result HTML
+    const description = departmentDescriptions[finalDept] || "A special place where your gifts can shine.";
+
     resultEl.innerHTML = `
-      <h2>Your ideal department is:</h2>
-      <div class="department">${chosenDept}</div>
-      <div class="description">${departmentDescriptions[chosenDept] || "A special place to serve with your gifts."}</div>
-      <button class="home-btn" id="restart-btn" aria-label="Restart the quiz">Try Again</button>
+      <h2>You're best suited for:</h2>
+      <div class="department">${finalDept}</div>
+      <div class="description">${description}</div>
+      <button class="home-btn" id="home-btn" aria-label="Go back to start screen">Start Over</button>
+      <button class="another-btn" id="another-btn" aria-label="Take the quiz again">Try Again</button>
     `;
 
-    // Confetti effect on result screen
-    launchConfetti();
-
-    // Restart button handler
-    document.getElementById('restart-btn').addEventListener('click', () => {
-      stopConfetti();
-      showStart();
-    });
-  }
-
-  // Launch confetti animation
-  let confettiTimer = null;
-  function launchConfetti() {
-    if (!confetti) return;
-
-    const duration = 5 * 1000;
-    const end = Date.now() + duration;
-
-    (function frame() {
+    // Confetti celebration
+    if (confettiInstance) {
       confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ['#6a1b9a', '#ffd700', '#3c1361']
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
       });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ['#6a1b9a', '#ffd700', '#3c1361']
-      });
-
-      if (Date.now() < end) {
-        confettiTimer = requestAnimationFrame(frame);
-      }
-    })();
-  }
-
-  function stopConfetti() {
-    if (confettiTimer) {
-      cancelAnimationFrame(confettiTimer);
-      confettiTimer = null;
-      confetti.reset();
     }
+
+    document.getElementById('home-btn').addEventListener('click', showStart);
+    document.getElementById('another-btn').addEventListener('click', () => {
+      currentQuestionIndex = 0;
+      answersCount = {};
+      initAnswersCount(currentVersion);
+      questionHistory = [];
+      resultEl.style.display = 'none';
+      backBtn.style.display = 'none';
+      showQuestion(currentQuestionIndex);
+    });
   }
 
   // Back button handler
   backBtn.addEventListener('click', () => {
-    if (currentQuestionIndex === 0) return;
-
-    // Undo last answer
-    const lastAnswer = questionHistory.pop();
-    if (lastAnswer) {
-      answersCount[lastAnswer.selectedDept]--;
-    }
-    currentQuestionIndex--;
-    showQuestion(currentQuestionIndex);
-
-    // Hide back button if at first question
-    if (currentQuestionIndex === 0) {
-      backBtn.style.display = 'none';
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      // Remove last answer and decrement count
+      const lastAnswer = questionHistory.pop();
+      if (lastAnswer) {
+        answersCount[lastAnswer.selectedDept]--;
+      }
+      showQuestion(currentQuestionIndex);
+      if (currentQuestionIndex === 0) {
+        backBtn.style.display = 'none';
+      }
     }
   });
 
-  // Start buttons handlers
+  // Start buttons
   document.getElementById('start-london').addEventListener('click', () => {
     currentVersion = 'london';
     initAnswersCount(currentVersion);
-    startScreenEl.style.display = 'none';
     currentQuestionIndex = 0;
     questionHistory = [];
     showQuestion(currentQuestionIndex);
+    backBtn.style.display = 'none';
   });
-
   document.getElementById('start-kp2').addEventListener('click', () => {
     currentVersion = 'kp2';
     initAnswersCount(currentVersion);
-    startScreenEl.style.display = 'none';
     currentQuestionIndex = 0;
     questionHistory = [];
     showQuestion(currentQuestionIndex);
+    backBtn.style.display = 'none';
   });
 
-  // Show start screen initially
+  // Initial state
   showStart();
 
 })();
 </script>
 </body>
 </html>
-
-
