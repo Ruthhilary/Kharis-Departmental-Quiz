@@ -368,72 +368,56 @@
     resultEl.style.display = 'none';
   }
 
-  // Show final result based on answersCount
-  function showResult() {
-    quizEl.style.display = 'none';
-    resultEl.style.display = 'block';
+ // Show final result based on answersCount
+function showResult() {
+  quizEl.style.display = 'none';
+  resultEl.style.display = 'block';
 
-    // Find department(s) with highest score
-    let maxCount = 0;
-    let topDepartments = [];
-    for (const [dept, count] of Object.entries(answersCount)) {
-      if (count > maxCount) {
-        maxCount = count;
-        topDepartments = [dept];
-      } else if (count === maxCount) {
-        topDepartments.push(dept);
-      }
-    }
+  // Find departments with highest scores
+  const sortedDepts = Object.entries(answersCount)
+    .sort((a, b) => b[1] - a[1])
+    .filter(([_, count]) => count > 0);
 
-    // If tie, pick randomly
-    const finalDept = topDepartments[Math.floor(Math.random() * topDepartments.length)];
+  const topTwo = sortedDepts.slice(0, 2); // get top 2 departments
 
-    const description = departmentDescriptions[finalDept] || "A special place where your gifts can shine.";
+  let resultHTML = `<h2>You're best suited for:</h2>`;
 
-    resultEl.innerHTML = `
-      <h2>You're best suited for:</h2>
-      <div class="department">${finalDept}</div>
+  topTwo.forEach(([dept]) => {
+    const description = departmentDescriptions[dept] || "A special place where your gifts can shine.";
+    resultHTML += `
+      <div class="department">${dept}</div>
       <div class="description">${description}</div>
-      <button class="home-btn" id="home-btn" aria-label="Go back to start screen">Start Over</button>
-      <button class="another-btn" id="another-btn" aria-label="Take the quiz again">Try Again</button>
     `;
+  });
 
-    // Confetti celebration
-    if (confettiInstance) {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    }
+  resultHTML += `
+    <button class="home-btn" id="home-btn" aria-label="Go back to start screen">Start Over</button>
+    <button class="another-btn" id="another-btn" aria-label="Take the quiz again">Try Again</button>
+  `;
 
-    document.getElementById('home-btn').addEventListener('click', showStart);
-    document.getElementById('another-btn').addEventListener('click', () => {
-      currentQuestionIndex = 0;
-      answersCount = {};
-      initAnswersCount(currentVersion);
-      questionHistory = [];
-      resultEl.style.display = 'none';
-      backBtn.style.display = 'none';
-      showQuestion(currentQuestionIndex);
+  resultEl.innerHTML = resultHTML;
+
+  // Confetti celebration
+  if (confettiInstance) {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
     });
   }
 
-  // Back button handler
-  backBtn.addEventListener('click', () => {
-    if (currentQuestionIndex > 0) {
-      currentQuestionIndex--;
-      // Remove last answer and decrement count
-      const lastAnswer = questionHistory.pop();
-      if (lastAnswer) {
-        answersCount[lastAnswer.selectedDept]--;
-      }
-      showQuestion(currentQuestionIndex);
-      if (currentQuestionIndex === 0) {
-        backBtn.style.display = 'none';
-      }
-    }
+  document.getElementById('home-btn').addEventListener('click', showStart);
+  document.getElementById('another-btn').addEventListener('click', () => {
+    currentQuestionIndex = 0;
+    answersCount = {};
+    initAnswersCount(currentVersion);
+    questionHistory = [];
+    resultEl.style.display = 'none';
+    backBtn.style.display = 'none';
+    showQuestion(currentQuestionIndex);
   });
+}
+
 
   // Start buttons
   document.getElementById('start-london').addEventListener('click', () => {
