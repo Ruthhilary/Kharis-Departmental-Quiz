@@ -6,452 +6,231 @@
 <title>Kharis Department Quiz</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
 <style>
-  * {
-    box-sizing: border-box; margin: 0; padding: 0;
-  }
-  body {
-    font-family: 'Quicksand', sans-serif;
-    background: url('https://kharis.org/wp-content/uploads/2022/11/271239127_4868436629869265_1030465267411614205_n.jpg') center/cover no-repeat fixed;
-    color: #fff;
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-  }
-  .container {
-    max-width: 700px;
-    width: 100%;
-    background: rgba(60,19,97,0.85);
-    border-radius: 20px;
-    padding: 2rem 3rem;
-    text-align: center;
-    box-shadow: 0 0 20px #8e24aaaa;
-    animation: fadeIn 1s ease forwards;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-  h1, h2, h3 {
-    font-family: 'Fredoka One', cursive;
-    margin-bottom: 1.5rem;
-  }
-  .btn {
-    background: #fff;
-    color: #6a1b9a;
-    border: none;
-    padding: 1rem 2rem;
-    margin: 1rem 0.5rem;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    font-family: 'Fredoka One', cursive;
-    transition: background 0.3s, color 0.3s;
-    min-width: 140px;
-    user-select: none;
-  }
-  .btn:hover, .btn:focus {
-    background: #ffd700;
-    color: #3c1361;
-    outline: none;
-  }
-  .question {
-    font-size: 1.9rem;
-    margin-bottom: 2rem;
-  }
-  .answers {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  .answers button {
-    background: #6a1b9a;
-    color: #fff;
-    border: none;
-    padding: 1rem 1.5rem;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    font-family: 'Fredoka One', cursive;
-    user-select: none;
-    transition: background 0.3s;
-  }
-  .answers button:hover, .answers button:focus {
-    background: #ffd700;
-    color: #3c1361;
-    outline: none;
-  }
-  .result h2 {
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-  }
-  .result .department {
-    font-size: 1.8rem;
-    margin: 1rem 0 0.5rem;
-    font-weight: bold;
-  }
-  .result .description {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-  .result .home-btn, .result .another-btn {
-    margin-top: 1rem;
-    background: #ffd700;
-    color: #3c1361;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 30px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: 'Fredoka One', cursive;
-    min-width: 160px;
-    user-select: none;
-    transition: background 0.3s, color 0.3s;
-  }
-  .result .home-btn:hover, .result .home-btn:focus, 
-  .result .another-btn:hover, .result .another-btn:focus {
-    background: #6a1b9a;
-    color: #ffd700;
-    outline: none;
-  }
-  .back-btn {
-    background: transparent;
-    color: #ffd700;
-    border: 2px solid #ffd700;
-    padding: 0.6rem 1.4rem;
-    border-radius: 30px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: 'Fredoka One', cursive;
-    user-select: none;
-    transition: background 0.3s, color 0.3s;
-    align-self: center;
-    margin-top: 1rem;
-    width: max-content;
-  }
-  .back-btn:hover, .back-btn:focus {
-    background: #ffd700;
-    color: #3c1361;
-    outline: none;
-  }
-  .confetti {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
-  /* Responsive styles for tablets and iPads */
-  @media (max-width: 1024px) {
-    .container { padding: 1.5rem 2rem; }
-    .question { font-size: 1.6rem; }
-    .btn { font-size: 1rem; padding: 0.8rem 1.5rem; }
-    .result h2 { font-size: 2rem; }
-    .result .department { font-size: 1.5rem; }
-    .result .description { font-size: 1rem; }
-    .result .home-btn, .result .another-btn, .back-btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
-  }
-  /* Responsive styles for smaller tablets and iPads in portrait */
-  @media (max-width: 768px) {
-    .container { padding: 1.2rem 1.5rem; }
-    .question { font-size: 1.4rem; }
-    .btn { font-size: 0.95rem; padding: 0.7rem 1.2rem; }
-    .result h2 { font-size: 1.8rem; }
-    .result .department { font-size: 1.3rem; }
-    .result .description { font-size: 0.95rem; }
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: url('https://kharis.org/wp-content/uploads/2022/11/271239127_4868436629869265_1030465267411614205_n.jpg') center/cover no-repeat fixed;
+  color: #fff; display: flex; justify-content: center; align-items: center;
+  min-height: 100vh; padding: 2rem;
+}
+.container {
+  max-width: 700px; width: 100%;
+  background: rgba(60,19,97,0.85);
+  border-radius: 20px; padding: 2rem 3rem;
+  text-align: center; box-shadow: 0 0 20px #8e24aaaa;
+  display: flex; flex-direction: column;
+  animation: fadeIn 1s ease forwards;
+}
+h1, h2, h3 { font-family: 'Fredoka One', cursive; margin-bottom: 1.5rem; }
+.btn {
+  background: #fff; color: #6a1b9a;
+  border: none; padding: 1rem 2rem; margin: 1rem 0.5rem;
+  border-radius: 50px; font-size: 1.2rem; cursor: pointer;
+  font-family: 'Fredoka One', cursive;
+  transition: background 0.3s, color 0.3s; min-width: 140px;
+}
+.btn:hover { background: #ffd700; color: #3c1361; }
+.question { font-size: 1.7rem; margin-bottom: 2rem; }
+.answers { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.answers button {
+  background: #6a1b9a; color: #fff;
+  border: none; padding: 1rem 1.5rem;
+  border-radius: 30px; font-size: 1.1rem; cursor: pointer;
+  font-family: 'Fredoka One', cursive; transition: background 0.3s;
+}
+.answers button:hover { background: #ffd700; color: #3c1361; }
+.result h2 { font-size: 2.3rem; margin-bottom: 1.2rem; }
+.department { font-size: 1.6rem; font-weight: bold; margin: 0.8rem 0 0.4rem; }
+.description { font-size: 1.1rem; margin-bottom: 1.2rem; }
+.home-btn, .another-btn {
+  margin-top: 1rem; background: #ffd700; color: #3c1361;
+  padding: 0.8rem 1.5rem; border: none;
+  border-radius: 30px; font-size: 1rem; cursor: pointer;
+  font-family: 'Fredoka One', cursive;
+}
+.home-btn:hover, .another-btn:hover { background: #6a1b9a; color: #ffd700; }
+.back-btn {
+  background: transparent; color: #ffd700;
+  border: 2px solid #ffd700; padding: 0.6rem 1.4rem;
+  border-radius: 30px; font-size: 1rem; cursor: pointer;
+  font-family: 'Fredoka One', cursive; margin-top: 1rem;
+}
+.back-btn:hover { background: #ffd700; color: #3c1361; }
+.confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+@keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
 </style>
 </head>
 <body>
-<div class="container" role="main" aria-live="polite" aria-atomic="true">
-  <!-- Start Screen -->
-  <div class="start-screen" id="start-screen">
+<div class="container">
+  <div id="start-screen">
     <h1>Are You Ready to Discover Your Department?</h1>
-    <button class="btn" id="start-london" aria-label="Start quiz for Kharis Church London">Kharis Church London</button>
-    <button class="btn" id="start-kp2" aria-label="Start quiz for KP2">KP2</button>
+    <button class="btn" id="start-london">Kharis Church London</button>
+    <button class="btn" id="start-kp2">KP2</button>
   </div>
-  <!-- Quiz Questions Section -->
-  <div class="question-section" id="quiz" style="display:none;" aria-live="polite" aria-atomic="true"></div>
-  <!-- Back Button -->
-  <button class="back-btn" id="back-btn" style="display:none;" aria-label="Go back to previous question">&larr; Back</button>
-  <!-- Result Screen -->
-  <div class="result" id="result" style="display:none;" aria-live="polite" aria-atomic="true"></div>
-  <!-- Confetti Canvas -->
+
+  <div id="quiz" style="display:none;"></div>
+  <button class="back-btn" id="back-btn" style="display:none;">&larr; Back</button>
+  <div id="result" style="display:none;"></div>
   <canvas id="confetti-canvas" class="confetti"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
 (() => {
-  const quizEl = document.getElementById('quiz');
-  const startScreenEl = document.getElementById('start-screen');
-  const resultEl = document.getElementById('result');
-  const backBtn = document.getElementById('back-btn');
-  const confettiCanvas = document.getElementById('confetti-canvas');
+const quizEl = document.getElementById("quiz");
+const startScreenEl = document.getElementById("start-screen");
+const resultEl = document.getElementById("result");
+const backBtn = document.getElementById("back-btn");
 
-  const confettiInstance = confettiCanvas && confettiCanvas.getContext ? window.confetti : null;
+let traits = { Creative:0, Leader:0, Servant:0, Social:0, Technical:0 };
+let answersCount = {};
+let currentVersion = null;
+let currentQuestionIndex = 0;
+let questionHistory = [];
 
-  const questions = {
-    london: [
-      {
-        question: "When faced with chaos, what grounds you most?",
-        answers: [
-          { text: "A plan", dept: "Administration" },
-          { text: "A calm presence", dept: "Welfare" },
-          { text: "Creative expression", dept: "Design" },
-          { text: "A song", dept: "Music" },
-          { text: "Being with children", dept: "Children's Department" }
-        ]
-      },
-      {
-        question: "How do you prefer to impact others?",
-        answers: [
-          { text: "Organising events", dept: "Hospitality" },
-          { text: "Welcoming newcomers", dept: "Host Team" },
-          { text: "Sharing inspiring stories", dept: "Drama" },
-          { text: "Practical help", dept: "Sanctuary Keepers" },
-          { text: "Performing poetry", dept: "Spoken Word" }
-        ]
-      },
-      {
-        question: "In a group, you are the one who:",
-        answers: [
-          { text: "Keeps track of details", dept: "Administration" },
-          { text: "Comforts and encourages", dept: "Welfare" },
-          { text: "The one who captures memories", dept: "Production" },
-          { text: "Greets people", dept: "Ushers" },
-           { text: "Capturing moments through photos", dept: "Photography" }
-        ]
-      },
-      {
-        question: "How do you love to serve in the Kingdom? ",
-        answers: [
-          { text: "Teaching", dept: "Follow Up" },
-          { text: "Encouragement", dept: "New Believers" },
-          { text: "Good News Carrier", dept: "Evangelism" },
-          { text: "Service", dept: "Set-up" },
-          { text: "Caring for children", dept: "Children's Department" }
-        ]
-      }
-    ],
-    kp2: [
-      {
-        question: "What’s your vibe on a weekend?",
-        answers: [
-          { text: "Chilling with friends", dept: "Hospitality" },
-          { text: "Creating art or music", dept: "K-Music" },
-          { text: "Helping others out", dept: "Welfare" },
-          { text: "Being on stage or drama", dept: "K-Drama" }
-        ]
-      },
-      {
-        question: "Your friends describe you as:",
-        answers: [
-          { text: "Organised and responsible", dept: "Administration" },
-          { text: "Outgoing and welcoming", dept: "Host Team" },
-          { text: "Digitally minded", dept: "Media" },
-          { text: "Loyal and protective", dept: "Security" },
-          { text: "Creative with content and trends", dept: "Social Media" }
-        ]
-      },
-      {
-        question: "Which sounds most like you in church?",
-        answers: [
-          { text: "Singing your heart out", dept: "K-Music" },
-          { text: "Helping new people feel at home", dept: "Follow Up" },
-          { text: "Telling others about Jesus", dept: "Evangelism" },
-          { text: "Making sure everything runs smooth", dept: "Set-up" },
-          { text: "Voice of truth", dept: "Spoken Word" }
-        ]
-      },
-      {
-        question: "You’d rather be:",
-        answers: [
-          { text: "Behind the scenes making videos", dept: "Media" },
-          { text: "Greeting people at the door", dept: "Ushers" },
-          { text: "Ensuring safety", dept: "Security" },
-           { text: "Capturing moments through photos", dept: "Photography" }
-        ]
-      }
-    ]
-  };
+const questions = {
+  london: [
+    { question: "When faced with chaos, what grounds you most?", answers: [
+      { text: "A plan", traits:{Leader:2,Technical:1}, dept:{Administration:2} },
+      { text: "A calm presence", traits:{Servant:2,Social:1}, dept:{Welfare:2} },
+      { text: "Creative expression", traits:{Creative:2}, dept:{Design:2} },
+      { text: "A song", traits:{Creative:2,Social:1}, dept:{Music:2} },
+      { text: "Being with children", traits:{Servant:2}, dept:{"Children's Department":2} }
+    ]},
+    { question: "How do you prefer to impact others?", answers: [
+      { text: "Organising events", traits:{Leader:2}, dept:{Hospitality:2} },
+      { text: "Welcoming newcomers", traits:{Social:2}, dept:{"Host Team":2} },
+      { text: "Sharing inspiring stories", traits:{Creative:2}, dept:{Drama:2} },
+      { text: "Practical help", traits:{Servant:2}, dept:{"Sanctuary Keepers":2} },
+      { text: "Performing poetry", traits:{Creative:2}, dept:{"Spoken Word":2} }
+    ]},
+    { question: "In a group, you are the one who:", answers: [
+      { text: "Keeps track of details", traits:{Leader:2,Technical:1}, dept:{Administration:2} },
+      { text: "Comforts and encourages", traits:{Servant:2}, dept:{Welfare:2} },
+      { text: "The one who captures memories", traits:{Creative:2}, dept:{Production:2} },
+      { text: "Greets people", traits:{Social:2}, dept:{Ushers:2} },
+      { text: "Capturing moments through photos", traits:{Creative:2}, dept:{Photography:2} }
+    ]},
+    { question: "How do you love to serve in the Kingdom?", answers: [
+      { text: "Teaching", traits:{Leader:2}, dept:{FollowUp:2} },
+      { text: "Encouragement", traits:{Servant:2}, dept:{"New Believers":2} },
+      { text: "Good News Carrier", traits:{Leader:2}, dept:{Evangelism:2} },
+      { text: "Service", traits:{Servant:2}, dept:{SetUp:2} },
+      { text: "Caring for children", traits:{Servant:2}, dept:{"Children's Department":2} }
+    ]}
+  ],
+  kp2: [
+    { question: "What’s your vibe on a weekend?", answers: [
+      { text: "Chilling with friends", traits:{Social:2}, dept:{Hospitality:2} },
+      { text: "Creating art or music", traits:{Creative:2}, dept:{"K-Music":2} },
+      { text: "Helping others out", traits:{Servant:2}, dept:{Welfare:2} },
+      { text: "Being on stage or drama", traits:{Creative:2,Social:1}, dept:{"K-Drama":2} }
+    ]},
+    { question: "Your friends describe you as:", answers: [
+      { text: "Organised and responsible", traits:{Leader:2}, dept:{Administration:2} },
+      { text: "Outgoing and welcoming", traits:{Social:2}, dept:{"Host Team":2} },
+      { text: "Digitally minded", traits:{Technical:2}, dept:{Media:2} },
+      { text: "Loyal and protective", traits:{Leader:1,Servant:1}, dept:{Security:2} },
+      { text: "Creative with content and trends", traits:{Creative:2}, dept:{"Social Media":2} }
+    ]},
+    { question: "Which sounds most like you in church?", answers: [
+      { text: "Singing your heart out", traits:{Creative:2}, dept:{"K-Music":2} },
+      { text: "Helping new people feel at home", traits:{Servant:2,Social:1}, dept:{FollowUp:2} },
+      { text: "Telling others about Jesus", traits:{Leader:2}, dept:{Evangelism:2} },
+      { text: "Making sure everything runs smooth", traits:{Leader:2,Technical:1}, dept:{SetUp:2} },
+      { text: "Voice of truth", traits:{Creative:2,Leader:1}, dept:{"Spoken Word":2} }
+    ]},
+    { question: "You’d rather be:", answers: [
+      { text: "Behind the scenes making videos", traits:{Technical:2}, dept:{Media:2} },
+      { text: "Greeting people at the door", traits:{Social:2}, dept:{Ushers:2} },
+      { text: "Ensuring safety", traits:{Leader:2,Servant:1}, dept:{Security:2} },
+      { text: "Capturing moments through photos", traits:{Creative:2}, dept:{Photography:2} }
+    ]}
+  ]
+};
 
-  // Department descriptions (can add more)
-  const departmentDescriptions = {
-    "Administration": "You have a keen eye for detail and thrive on keeping things organized and running smoothly.",
-    "Children's Department": "You love nurturing and guiding the youngest in the church with kindness and patience.",
-    "Design": "Creative and imaginative, you bring fresh ideas and visuals to life for the church.",
-    "Drama": "You express your faith powerfully through storytelling and performance.",
-    "Evangelism": "Bold and passionate, you love sharing the message of Jesus with others.",
-    "Follow Up": "Caring and patient, you help new believers grow in their faith.",
-    "Hospitality": "Warm and welcoming, you make everyone feel at home.",
-    "Host Team": "Friendly and approachable, you ensure guests have a great experience.",
-    "K-Drama": "Energetic and expressive, you bring stories to life for younger audiences.",
-    "K-Music": "Musically gifted and joyful, you lead worship and praise.",
-    "Media": "Tech-savvy and creative, you help capture and share church moments.",
-    "Music": "You use your voice and instruments to lead others in worship.",
-    "New Believers": "You support and encourage those starting their faith journey.",
-    "Production": "Behind the scenes, you manage lights, sound, and tech to enhance worship.",
-    "Sanctuary Keepers": "You keep the church environment welcoming and orderly.",
-    "Security": "Protective and vigilant, you help keep everyone safe.",
-    "Set-up": "Hardworking and dependable, you ensure all church events are ready to go.",
-    "Ushers": "Friendly guides who help people find their place and feel comfortable.",
-    "Welfare": "Compassionate and kind, you help meet the practical and emotional needs of others.",
-"Spoken Word": "Artistic and expressive, you inspire others by using rhythm, poetry, and words to share God's truth.",
-"Social Media": "Creative and plugged in, you know how to capture the vibe and share the message through engaging content online.",
-"Photography": "You have an eye for capturing moments and telling stories through the lens. You help the church shine through stunning visuals.",
+const departmentDescriptions = {
+  "Administration":"You thrive on keeping things organised and running smoothly.",
+  "Children's Department":"You love guiding children with kindness and patience.",
+  "Design":"Creative and imaginative, you bring visuals to life for the church.",
+  "Drama":"You express faith powerfully through storytelling and performance.",
+  "Evangelism":"Bold and passionate, you love sharing Jesus with others.",
+  "FollowUp":"You help new believers grow in their faith journey.",
+  "Hospitality":"Warm and welcoming, you make everyone feel at home.",
+  "Host Team":"Friendly and approachable, you ensure guests feel valued.",
+  "K-Drama":"Energetic and expressive, you bring stories to life for youth.",
+  "K-Music":"Musically gifted, you lead worship with passion.",
+  "Media":"Tech-savvy and creative, you capture and share church moments.",
+  "Music":"You use your voice and instruments to lead others in worship.",
+  "New Believers":"You support those beginning their faith walk.",
+  "Production":"Behind the scenes, you manage sound and tech with excellence.",
+  "Sanctuary Keepers":"You care for the church environment.",
+  "Security":"Protective and vigilant, you help keep everyone safe.",
+  "SetUp":"Hardworking, you make sure events are ready to go.",
+  "Ushers":"Friendly guides who help people feel comfortable.",
+  "Welfare":"Compassionate, you meet practical and emotional needs.",
+  "Spoken Word":"Artistic and expressive, you use words to inspire.",
+  "Social Media":"You capture the vibe and share it creatively online.",
+  "Photography":"You have an eye for capturing moments through photos."
+};
 
-  };
-
-  let currentVersion = null;
-  let currentQuestionIndex = 0;
-  let answersCount = {};
-  let questionHistory = [];
-
-  function initAnswersCount(version) {
-    answersCount = {};
-    // Initialize count to 0 for each department in that version's questions
-    const depts = new Set();
-    questions[version].forEach(q => q.answers.forEach(a => depts.add(a.dept)));
-    depts.forEach(dept => answersCount[dept] = 0);
-  }
-
-  // Show the start screen and hide other sections
-  function showStart() {
-    startScreenEl.style.display = 'block';
-    quizEl.style.display = 'none';
-    resultEl.style.display = 'none';
-    backBtn.style.display = 'none';
-    currentVersion = null;
-    currentQuestionIndex = 0;
-    answersCount = {};
-    questionHistory = [];
-  }
-
-  // Show the question at index
-  function showQuestion(index) {
-    quizEl.innerHTML = '';
-    const q = questions[currentVersion][index];
-    if (!q) {
-      showResult();
-      return;
-    }
-    const questionEl = document.createElement('h2');
-    questionEl.className = 'question';
-    questionEl.textContent = q.question;
-    questionEl.id = 'question-text';
-    quizEl.appendChild(questionEl);
-
-    const answersDiv = document.createElement('div');
-    answersDiv.className = 'answers';
-    answersDiv.setAttribute('role', 'list');
-    q.answers.forEach(answer => {
-      const btn = document.createElement('button');
-      btn.textContent = answer.text;
-      btn.setAttribute('role', 'listitem');
-      btn.setAttribute('aria-label', `${answer.text}, selects department ${answer.dept}`);
-      btn.addEventListener('click', () => {
-        // Add to history for backtracking
-        questionHistory.push({ questionIndex: currentQuestionIndex, selectedDept: answer.dept });
-        answersCount[answer.dept]++;
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions[currentVersion].length) {
-          showQuestion(currentQuestionIndex);
-          backBtn.style.display = 'inline-block';
-        } else {
-          showResult();
-          backBtn.style.display = 'none';
-        }
-      });
-      answersDiv.appendChild(btn);
-    });
-
-    quizEl.appendChild(answersDiv);
-    quizEl.style.display = 'block';
-    startScreenEl.style.display = 'none';
-    resultEl.style.display = 'none';
-  }
-
- // Show final result based on answersCount
-function showResult() {
-  quizEl.style.display = 'none';
-  resultEl.style.display = 'block';
-
-  // Find departments with highest scores
-  const sortedDepts = Object.entries(answersCount)
-    .sort((a, b) => b[1] - a[1])
-    .filter(([_, count]) => count > 0);
-
-  const topTwo = sortedDepts.slice(0, 2); // get top 2 departments
-
-  let resultHTML = `<h2>You're best suited for:</h2>`;
-
-  topTwo.forEach(([dept]) => {
-    const description = departmentDescriptions[dept] || "A special place where your gifts can shine.";
-    resultHTML += `
-      <div class="department">${dept}</div>
-      <div class="description">${description}</div>
-    `;
-  });
-
-  resultHTML += `
-    <button class="home-btn" id="home-btn" aria-label="Go back to start screen">Start Over</button>
-    <button class="another-btn" id="another-btn" aria-label="Take the quiz again">Try Again</button>
-  `;
-
-  resultEl.innerHTML = resultHTML;
-
-  // Confetti celebration
-  if (confettiInstance) {
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  }
-
-  document.getElementById('home-btn').addEventListener('click', showStart);
-  document.getElementById('another-btn').addEventListener('click', () => {
-    currentQuestionIndex = 0;
-    answersCount = {};
-    initAnswersCount(currentVersion);
-    questionHistory = [];
-    resultEl.style.display = 'none';
-    backBtn.style.display = 'none';
-    showQuestion(currentQuestionIndex);
-  });
+function initScores(version){
+  traits={Creative:0,Leader:0,Servant:0,Social:0,Technical:0};
+  answersCount={};
+  questions[version].forEach(q=>q.answers.forEach(a=>Object.keys(a.dept).forEach(d=>answersCount[d]=0)));
+  questionHistory=[];
 }
 
-
-  // Start buttons
-  document.getElementById('start-london').addEventListener('click', () => {
-    currentVersion = 'london';
-    initAnswersCount(currentVersion);
-    currentQuestionIndex = 0;
-    questionHistory = [];
-    showQuestion(currentQuestionIndex);
-    backBtn.style.display = 'none';
+function showQuestion(index){
+  const q=questions[currentVersion][index];
+  if(!q){showResult();return;}
+  quizEl.innerHTML="";
+  const questionEl=document.createElement("h2"); questionEl.className="question"; questionEl.textContent=q.question;
+  quizEl.appendChild(questionEl);
+  const answersDiv=document.createElement("div"); answersDiv.className="answers";
+  q.answers.forEach(a=>{
+    const btn=document.createElement("button"); btn.textContent=a.text;
+    btn.onclick=()=>{
+      questionHistory.push({questionIndex:currentQuestionIndex,traits:{...traits},answersCount:{...answersCount}});
+      for(let t in a.traits) traits[t]+=a.traits[t];
+      for(let d in a.dept) answersCount[d]+=a.dept[d];
+      currentQuestionIndex++;
+      showQuestion(currentQuestionIndex);
+    };
+    answersDiv.appendChild(btn);
   });
-  document.getElementById('start-kp2').addEventListener('click', () => {
-    currentVersion = 'kp2';
-    initAnswersCount(currentVersion);
-    currentQuestionIndex = 0;
-    questionHistory = [];
-    showQuestion(currentQuestionIndex);
-    backBtn.style.display = 'none';
+  quizEl.appendChild(answersDiv);
+  quizEl.style.display="block"; startScreenEl.style.display="none"; resultEl.style.display="none";
+  backBtn.style.display=(currentQuestionIndex>0)?"inline-block":"none";
+}
+
+function showResult(){
+  quizEl.style.display="none"; resultEl.style.display="block";
+  const combinedScores={...answersCount};
+  if(traits.Creative>0) combinedScores["Design"]=(combinedScores["Design"]||0)+traits.Creative;
+  if(traits.Leader>0) combinedScores["Administration"]=(combinedScores["Administration"]||0)+traits.Leader;
+  if(traits.Servant>0) combinedScores["Welfare"]=(combinedScores["Welfare"]||0)+traits.Servant;
+  if(traits.Social>0) combinedScores["Host Team"]=(combinedScores["Host Team"]||0)+traits.Social;
+  if(traits.Technical>0) combinedScores["Media"]=(combinedScores["Media"]||0)+traits.Technical;
+
+  const sorted=Object.entries(combinedScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
+  let html=`<h2>You're best suited for:</h2>`;
+  sorted.forEach(([d])=>{
+    html+=`<div class="department">${d}</div><div class="description">${departmentDescriptions[d]||"A special place where your gifts can shine."}</div>`;
   });
+  html+=`<button class="home-btn" id="home-btn">Start Over</button><button class="another-btn" id="another-btn">Try Again</button>`;
+  resultEl.innerHTML=html;
+  if(typeof confetti!=="undefined") confetti({particleCount:150,spread:70,origin:{y:0.6}});
+  document.getElementById("home-btn").onclick=showStart;
+  document.getElementById("another-btn").onclick=()=>{currentQuestionIndex=0;initScores(currentVersion);showQuestion(0);}
+}
 
-  // Initial state
-  showStart();
-
+backBtn.onclick=()=>{if(questionHistory.length>0){const last=questionHistory.pop();traits=last.traits;answersCount=last.answersCount;currentQuestionIndex=last.questionIndex;showQuestion(currentQuestionIndex);}};
+function showStart(){startScreenEl.style.display="block";quizEl.style.display="none";resultEl.style.display="none";backBtn.style.display="none";currentVersion=null;currentQuestionIndex=0;traits={Creative:0,Leader:0,Servant:0,Social:0,Technical:0};answersCount={};questionHistory=[];}
+document.getElementById("start-london").onclick=()=>{currentVersion="london";initScores(currentVersion);showQuestion(0);};
+document.getElementById("start-kp2").onclick=()=>{currentVersion="kp2";initScores(currentVersion);showQuestion(0);};
+showStart();
 })();
 </script>
 </body>
 </html>
-
