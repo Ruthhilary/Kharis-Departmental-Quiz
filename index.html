@@ -41,7 +41,8 @@ input[type="text"] {
 .back-btn:hover { background: #ffd700; color: #3c1361; }
 .result { font-size:1.2rem; margin-top:1rem; }
 .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-.department { font-family: 'Fredoka One', cursive; font-size:1.3rem; margin:0.5rem 0; }
+.department { font-family: 'Fredoka One', cursive; font-size:1.3rem; margin:0.5rem 0; opacity:0; transition: opacity 0.8s ease; }
+.department.show { opacity:1; }
 .scripture-box {
   background: rgba(255, 215, 0, 0.15);
   color: #fff;
@@ -88,7 +89,6 @@ let currentQ = 0;
 let questionHistory = [];
 let deptScores = {};
 
-// Free-text questions
 const quizzes = {
   kp2: [
     { q:"What’s your vibe on a weekend?" },
@@ -104,7 +104,6 @@ const quizzes = {
   ]
 };
 
-// Department keywords
 const deptKeywords = {
   "Administration":["organise","plan","manage","admin","schedule"],
   "Children's Department":["children","kids","play","teach"],
@@ -151,7 +150,6 @@ function showQuestion() {
   backBtn.style.display = currentQ>0?"inline-block":"none";
 }
 
-// Improved scoring
 function scoreAnswer(input) {
   input = input.toLowerCase();
   let matched = false;
@@ -206,12 +204,12 @@ function showResult() {
     "Design":"Exodus 31:3-5 – I have filled him with the Spirit of God, with skill, ability, and knowledge in all kinds of crafts.",
     "Drama":"Psalm 150:4 – Praise him with the timbrel and dancing, praise him with strings and pipe.",
     "Evangelism":"Matthew 28:19 – Go and make disciples of all nations.",
-    "Follow Up":"Hebrews 10:24-25 – Encourage one another and spur one another on toward love and good deeds.",
-    "Hospitality":"Romans 12:13 – Share with the Lord’s people who are in need. Practice hospitality.",
+    "Follow Up":"Hebrews 10:24-25 – Encourage one another and all the more as you see the Day approaching.",
+    "Hospitality":"Romans 12:13 – Practice hospitality.",
     "Host Team":"1 Peter 4:9 – Offer hospitality to one another without grumbling.",
-    "K-Drama":"Psalm 33:3 – Sing to him a new song; play skillfully, and shout for joy.",
-    "K-Music":"Psalm 95:1 – Come, let us sing for joy to the Lord; let us shout aloud to the Rock of our salvation.",
-    "Media":"Colossians 3:23 – Whatever you do, work at it with all your heart, as working for the Lord.",
+    "K-Drama":"Psalm 150:4 – Praise him with the timbrel and dancing, praise him with strings and pipe.",
+    "K-Music":"Psalm 150:3 – Praise him with the sounding of the trumpet.",
+    "Media":"Psalm 19:14 – Let the words of my mouth and the meditation of my heart be pleasing in your sight.",
     "Music":"Psalm 100:1-2 – Make a joyful noise to the Lord, all the earth! Serve the Lord with gladness.",
     "New Believers":"James 5:19-20 – Bring back those who have wandered from the truth.",
     "Production":"1 Corinthians 14:40 – But everything should be done in a fitting and orderly way.",
@@ -230,7 +228,7 @@ function showResult() {
   const sorted = Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
   let html = `<h2>Your Top 2 Departments:</h2>`;
   sorted.forEach(([d], i)=>{
-    html += `<div class="department"><strong>${d}</strong>
+    html += `<div class="department" id="dept-${i}"><strong>${d}</strong>
              <div class="scripture-box" id="scripture-${i}">${scriptures[d]}</div>
              </div>`;
   });
@@ -239,12 +237,14 @@ function showResult() {
 
   if(typeof confetti!=="undefined") confetti({particleCount:150,spread:70,origin:{y:0.6}});
 
-  // Fade in scriptures one by one
-  sorted.forEach((_, i) => {
-    setTimeout(() => {
-      const el = document.getElementById(`scripture-${i}`);
-      if(el) el.classList.add('show');
-    }, i * 800); // 0.8s delay between each
+  // Animate department and scripture
+  sorted.forEach((_, i)=>{
+    setTimeout(()=>{
+      document.getElementById(`dept-${i}`).classList.add("show");
+      setTimeout(()=>{
+        document.getElementById(`scripture-${i}`).classList.add("show");
+      }, 500);
+    }, i*1000);
   });
 }
 
