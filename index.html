@@ -42,6 +42,16 @@ input[type="text"] {
 .result { font-size:1.2rem; margin-top:1rem; }
 .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 .department { font-family: 'Fredoka One', cursive; font-size:1.3rem; margin:0.5rem 0; }
+.scripture-box {
+  background: rgba(255, 215, 0, 0.15);
+  color: #fff;
+  border-left: 5px solid #ffd700;
+  padding: 10px 15px;
+  margin: 5px 0 15px 0;
+  border-radius: 10px;
+  font-style: italic;
+  text-align: left;
+}
 </style>
 </head>
 <body>
@@ -184,9 +194,40 @@ function showResult() {
   quizEl.style.display="none";
   resultEl.style.display="block";
 
+  const scriptures = {
+    "Administration":"Proverbs 16:3 – Commit to the Lord whatever you do, and he will establish your plans.",
+    "Children's Department":"Matthew 19:14 – Let the little children come to me, and do not hinder them.",
+    "Design":"Exodus 31:3-5 – I have filled him with the Spirit of God, with skill, ability, and knowledge in all kinds of crafts.",
+    "Drama":"Psalm 150:4 – Praise him with the timbrel and dancing, praise him with strings and pipe.",
+    "Evangelism":"Matthew 28:19 – Go and make disciples of all nations.",
+    "Follow Up":"Hebrews 10:24-25 – Encourage one another and spur one another on toward love and good deeds.",
+    "Hospitality":"Romans 12:13 – Share with the Lord’s people who are in need. Practice hospitality.",
+    "Host Team":"1 Peter 4:9 – Offer hospitality to one another without grumbling.",
+    "K-Drama":"Psalm 33:3 – Sing to him a new song; play skillfully, and shout for joy.",
+    "K-Music":"Psalm 95:1 – Come, let us sing for joy to the Lord; let us shout aloud to the Rock of our salvation.",
+    "Media":"Colossians 3:23 – Whatever you do, work at it with all your heart, as working for the Lord.",
+    "Music":"Psalm 100:1-2 – Make a joyful noise to the Lord, all the earth! Serve the Lord with gladness.",
+    "New Believers":"James 5:19-20 – Bring back those who have wandered from the truth.",
+    "Production":"1 Corinthians 14:40 – But everything should be done in a fitting and orderly way.",
+    "Sanctuary Keepers":"1 Corinthians 14:40 – Let all things be done decently and in order.",
+    "Security":"Psalm 91:11 – For he will command his angels concerning you to guard you in all your ways.",
+    "Set-up":"Nehemiah 4:6 – So we rebuilt the wall… for the people had a mind to work.",
+    "Ushers":"Hebrews 13:2 – Do not forget to show hospitality to strangers.",
+    "Welfare":"Galatians 6:10 – Do good to all people, especially to those who belong to the family of believers.",
+    "Spoken Word":"Proverbs 16:24 – Pleasant words are like a honeycomb, sweet to the soul and healing to the bones.",
+    "Social Media":"Matthew 5:16 – Let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",
+    "Photography":"Ecclesiastes 3:11 – God has made everything beautiful in its time.",
+    "Uniform":"1 Corinthians 10:31 – So whether you eat or drink or whatever you do, do it all for the glory of God.",
+    "Sound":"Psalm 150:5 – Praise him with the sounding of the trumpet, praise him with the harp and lyre."
+  };
+
   const sorted = Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
   let html = `<h2>Your Top 2 Departments:</h2>`;
-  sorted.forEach(([d])=> html += `<div class="department">${d}</div>`);
+  sorted.forEach(([d])=>{
+    html += `<div class="department"><strong>${d}</strong>
+             <div class="scripture-box">${scriptures[d]}</div>
+             </div>`;
+  });
   html += `<button class="btn" onclick="restart()">Start Over</button>`;
   resultEl.innerHTML = html;
 
