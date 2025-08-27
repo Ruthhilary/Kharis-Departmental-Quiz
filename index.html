@@ -51,6 +51,13 @@ input[type="text"] {
   border-radius: 10px;
   font-style: italic;
   text-align: left;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.scripture-box.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
 </head>
@@ -154,7 +161,6 @@ function scoreAnswer(input) {
     });
   });
   if(!matched) {
-    // Assign 2 relevant departments based on quiz type
     let relatedDepts = currentQuiz === "kp2" 
         ? ["Design","Drama","K-Music","Spoken Word","Social Media"] 
         : ["Design","Drama","Music","Photography","Production","Hospitality"];
@@ -171,7 +177,7 @@ window.nextQuestion = function() {
   questionHistory.push({q:currentQ, deptScores:{...deptScores}});
 
   if(["idk","i don't know","i dont know"].includes(input.toLowerCase())) {
-    scoreAnswer(""); // treat like blank, assign relevant departments
+    scoreAnswer(""); 
   } else {
     scoreAnswer(input);
   }
@@ -223,15 +229,23 @@ function showResult() {
 
   const sorted = Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
   let html = `<h2>Your Top 2 Departments:</h2>`;
-  sorted.forEach(([d])=>{
+  sorted.forEach(([d], i)=>{
     html += `<div class="department"><strong>${d}</strong>
-             <div class="scripture-box">${scriptures[d]}</div>
+             <div class="scripture-box" id="scripture-${i}">${scriptures[d]}</div>
              </div>`;
   });
   html += `<button class="btn" onclick="restart()">Start Over</button>`;
   resultEl.innerHTML = html;
 
   if(typeof confetti!=="undefined") confetti({particleCount:150,spread:70,origin:{y:0.6}});
+
+  // Fade in scriptures one by one
+  sorted.forEach((_, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(`scripture-${i}`);
+      if(el) el.classList.add('show');
+    }, i * 800); // 0.8s delay between each
+  });
 }
 
 window.restart = function() {
