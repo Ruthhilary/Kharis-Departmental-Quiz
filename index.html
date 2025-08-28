@@ -6,71 +6,44 @@
 <title>Kharis Department Quiz</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: url('https://kharis.org/wp-content/uploads/2022/11/271239127_4868436629869265_1030465267411614205_n.jpg') center/cover no-repeat fixed;
-  color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:2rem;
-}
-.container {
-  max-width:700px; width:100%;
-  background: rgba(60,19,97,0.85);
-  border-radius: 20px; padding: 2rem 3rem; text-align:center;
-  box-shadow:0 0 20px #8e24aaaa; display:flex; flex-direction:column;
-}
+* { box-sizing: border-box; margin:0; padding:0; transition: all 0.4s ease; }
+body { font-family: 'Quicksand', sans-serif; background: var(--bg-img) center/cover no-repeat fixed; color: var(--text-color); display:flex; justify-content:center; align-items:center; min-height:100vh; padding:2rem; }
+:root { --bg-img: url('https://kharis.org/wp-content/uploads/2022/11/271239127_4868436629869265_1030465267411614205_n.jpg'); --card-bg: rgba(60,19,97,0.85); --btn-bg: #ffd700; --btn-color: #3c1361; --text-color: #fff; }
+body.light { --card-bg: rgba(255,255,255,0.9); --btn-bg: #3c1361; --btn-color: #ffd700; --text-color: #000; }
+.container { max-width:700px; width:100%; background: var(--card-bg); border-radius: 20px; padding: 2rem 3rem; text-align:center; box-shadow:0 0 20px #8e24aaaa; display:flex; flex-direction:column; opacity:0; transform: translateY(30px);}
+.container.show { opacity:1; transform: translateY(0);}
 h1 { font-family: 'Fredoka One', cursive; margin-bottom: 1.5rem; }
-.question { font-family: 'Fredoka One', cursive; font-size:1.5rem; margin-bottom:1rem; }
-input[type="text"] {
-  padding: 12px; width: 80%; border-radius: 30px; border:none; font-size:1rem;
-  margin-bottom: 1rem; text-align:center;
-}
-.btn {
-  background: #ffd700; color: #3c1361;
-  border: none; padding: 1rem 2rem; margin: 0.5rem;
-  border-radius: 50px; font-size: 1.2rem; cursor: pointer;
-  font-family: 'Fredoka One', cursive;
-  transition: background 0.3s, color 0.3s; min-width: 140px;
-}
+.question { font-family: 'Fredoka One', cursive; font-size:1.3rem; margin-bottom:1rem; }
+.scripture { font-style: italic; font-size:0.95rem; margin-bottom:0.8rem; opacity:0.8; }
+input[type="text"], select { padding: 14px; width: 90%; border-radius: 30px; border:none; font-size:1rem; margin-bottom: 1rem; text-align:center; }
+.btn { background: var(--btn-bg); color: var(--btn-color); border: none; padding: 1rem 2rem; margin: 0.5rem auto; border-radius: 50px; font-size: 1.1rem; cursor: pointer; font-family: 'Fredoka One', cursive; transition: background 0.3s, color 0.3s; width:90%; }
 .btn:hover { background: #6a1b9a; color: #ffd700; }
-.back-btn {
-  background: transparent; color: #ffd700;
-  border: 2px solid #ffd700; padding: 0.6rem 1.4rem;
-  border-radius: 30px; font-size: 1rem; cursor: pointer;
-  font-family: 'Fredoka One', cursive; margin-top: 1rem;
-}
-.back-btn:hover { background: #ffd700; color: #3c1361; }
+.back-btn { background: transparent; color: var(--btn-bg); border: 2px solid var(--btn-bg); padding: 0.6rem 1.4rem; border-radius: 30px; font-size: 1rem; cursor: pointer; font-family: 'Fredoka One', cursive; margin-top: 1rem; }
+.back-btn:hover { background: var(--btn-bg); color: var(--btn-color); }
 .result { font-size:1.2rem; margin-top:1rem; }
 .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 .department { font-family: 'Fredoka One', cursive; font-size:1.3rem; margin:0.5rem 0; opacity:0; transition: opacity 0.8s ease; }
 .department.show { opacity:1; }
-.scripture-box {
-  background: rgba(255, 215, 0, 0.15);
-  color: #fff;
-  border-left: 5px solid #ffd700;
-  padding: 10px 15px;
-  margin: 5px 0 15px 0;
-  border-radius: 10px;
-  font-style: italic;
-  text-align: left;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-.scripture-box.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+.scripture-box { background: rgba(255, 215, 0, 0.15); color: var(--text-color); border-left: 5px solid var(--btn-bg); padding: 10px 15px; margin: 5px 0 15px 0; border-radius: 10px; font-style: italic; text-align: left; opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease; }
+.scripture-box.show { opacity: 1; transform: translateY(0); }
+.progress-bar { width: 100%; height: 12px; background: #ddd; border-radius: 20px; margin: 15px 0; }
+.progress { height: 100%; width: 0%; background: #ffd700; border-radius: 20px; transition: width 0.4s ease; }
+.toggle-mode { position:absolute; top:15px; right:15px; background:transparent; border:2px solid var(--btn-bg); color:var(--btn-bg); padding:5px 12px; border-radius:20px; cursor:pointer; font-size:0.9rem; }
+.toggle-mode:hover { background: var(--btn-bg); color: var(--btn-color); }
+@media(max-width:600px){ .container { padding:1.5rem; } .btn { font-size:1rem; padding:0.8rem; } }
 </style>
 </head>
 <body>
-<div class="container">
+<button class="toggle-mode" id="modeBtn">🌙</button>
+<div class="container show">
   <div id="start-screen">
     <h1>Are You Ready to Discover Your Department?</h1>
-    <button class="btn" id="start-london">Kharis Church London</button>
-    <button class="btn" id="start-kp2">KP2</button>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <input type="text" id="branch" placeholder="Enter your branch of Kharis Church" />
+    <button class="btn" id="start-kharis">Start Quiz</button>
   </div>
-
   <div id="quiz" style="display:none;"></div>
+  <div class="progress-bar"><div class="progress" id="progress"></div></div>
   <button class="back-btn" id="back-btn" style="display:none;">&larr; Back</button>
   <div id="result" style="display:none;"></div>
   <canvas id="confetti-canvas" class="confetti"></canvas>
@@ -79,189 +52,137 @@ input[type="text"] {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
 (() => {
-const quizEl = document.getElementById("quiz");
-const startScreenEl = document.getElementById("start-screen");
-const resultEl = document.getElementById("result");
-const backBtn = document.getElementById("back-btn");
+const quizEl = document.getElementById("quiz"),
+      startScreenEl = document.getElementById("start-screen"),
+      resultEl = document.getElementById("result"),
+      backBtn = document.getElementById("back-btn"),
+      progressEl = document.getElementById("progress");
 
-let currentQuiz = null;
-let currentQ = 0;
-let questionHistory = [];
-let deptScores = {};
+let username="", branch="", currentQuiz=null, currentQ=0, questionHistory=[],
+    deptScores={}, answersGiven=[];
 
 const quizzes = {
-  kp2: [
-    { q:"What’s your vibe on a weekend?" },
-    { q:"Your friends describe you as.." },
-    { q:"Describe how you naturally help or support people around you." },
-    { q:"If you could lead something, what would it be and why?" }
-  ],
-  london: [
-    { q:"When faced with chaos, what grounds you most?" },
-    { q:"How do you prefer to impact others?" },
-    { q:"In a group, you are the one who: for e.g(captures moments, greets, comforts)" },
-    { q:"How do you love to serve in the Kingdom? for e.g(music, teach, welcome, poetry)" }
+  kharis: [
+    { q:"When faced with chaos, what grounds you most?", s:"1 Corinthians 14:33 – For God is not a God of disorder but of peace." },
+    { q:"How do you prefer to impact others?", s:"Matthew 5:16 – Let your light shine before others." },
+    { q:"In a group, you are the one who...", s:"Romans 12:6 – We have different gifts, according to the grace given to each of us." },
+    { q:"How do you love to serve in the Kingdom?", s:"Ephesians 6:7 – Serve wholeheartedly, as if you were serving the Lord." },
+    { q:"If you could lead something, what would it be?", s:"Joshua 1:9 – Be strong and courageous." },
+    { q:"When someone is hurting, what do you naturally do?", s:"2 Corinthians 1:4 – God comforts us… so we can comfort others." },
+    { q:"What excites you most: creating, organising, helping, or sharing boldly?", s:"Colossians 3:23 – Whatever you do, work at it with all your heart." },
+    { q:"If you had one talent to use for God, what would it be?", s:"1 Peter 4:10 – Each of you should use whatever gift you have received to serve others." }
   ]
 };
 
-const deptKeywords = {
-  "Administration":["organise","plan","manage","admin","schedule"],
-  "Children's Department":["children","kids","play","teach"],
-  "Design":["creative","visual","art","design","draw"],
-  "Drama":["act","perform","storytelling","drama"],
-  "Evangelism":["share","bold","witness","evangelism","preach"],
-  "Follow Up":["follow","mentor","support","guidance"],
-  "Hospitality":["welcome","greet","friendly","hospitality"],
-  "Host Team":["host","welcome","assist","greeter"],
-  "K-Drama":["performance","stage","act","drama","energy"],
-  "K-Music":["music","beats","rap","sound"],
-  "Media":["camera","video","photos","media","tech"],
-  "Music":["sing","play","instrument","worship","music"],
-  "New Believers":["support","guide","mentor","newcomer","teach"],
-  "Production":["sound","lights","tech","production"],
-  "Sanctuary Keepers":["clean","organise","maintain","church"],
-  "Security":["protect","safe","security","guard"],
-  "Set-up":["setup","arrange","prepare","set-up"],
-  "Ushers":["guide","assist","usher","welcome"],
-  "Welfare":["help","serve","support","care","welfare"],
-  "Spoken Word":["poetry","speak","words","spoken word"],
-  "Social Media":["trends","post","social","online","media"],
-  "Photography":["photo","picture","camera","photography"],
-  "Uniform":["fashion","dress","team"],
-  "Sound":["sound","microphone","volume","check","audio","speaker"]
+const deptInfo = {
+  "Administration": {verse:"1 Corinthians 14:40 – Let all things be done decently and in order.", reason:"God calls you to manage and organise effectively, bringing order to His house."},
+  "Children's Department": {verse:"Matthew 19:14 – Let the little children come to me.", reason:"You have a heart to nurture and teach children, showing Christ's love."},
+  "Design": {verse:"Exodus 31:3-5 – I have filled him with skill, ability and knowledge in all kinds of crafts.", reason:"Your creativity glorifies God through visuals, art, and meaningful design."},
+  "Drama": {verse:"Psalm 150:4 – Praise Him with dancing and instruments.", reason:"You are gifted to tell God's story through performance and dramatization."},
+  "Evangelism": {verse:"Matthew 28:19 – Go and make disciples of all nations.", reason:"You have a bold spirit to share the Gospel and lead others to Christ."},
+  "Follow Up": {verse:"Hebrews 10:24-25 – Encourage one another daily.", reason:"You naturally guide and support others to grow in their faith."},
+  "Hospitality": {verse:"Romans 12:13 – Share with the Lord’s people who are in need. Practice hospitality.", reason:"God uses your welcoming and caring nature to bless others."},
+  "Host Team": {verse:"1 Peter 4:9 – Offer hospitality to one another without grumbling.", reason:"You excel at making everyone feel welcomed and at home."},
+  "Music": {verse:"Psalm 100:1 – Make a joyful noise to the Lord.", reason:"You lead others into worship through your musical talents."},
+  "Media": {verse:"Psalm 96:3 – Declare His glory among the nations.", reason:"You can use technology to share God’s message creatively."},
+  "Production": {verse:"Exodus 35:35 – He has filled them with skill to work with all kinds of tools.", reason:"You are gifted to manage technical aspects and make events seamless."},
+  "Sanctuary Keepers": {verse:"1 Corinthians 3:9 – You are God’s temple.", reason:"You maintain the sacred space of worship with diligence and care."},
+  "Set-up": {verse:"Nehemiah 2:18 – Let us rebuild the wall and restore the house of God.", reason:"You are called to prepare and set everything in place for God’s work."},
+  "Ushers": {verse:"Romans 12:13 – Share with God’s people who are in need. Practice hospitality.", reason:"You guide and assist people, making them feel safe and welcomed."},
+  "Welfare": {verse:"Galatians 6:2 – Carry each other’s burdens.", reason:"You are compassionate, helping and caring for those in need."},
+  "Social Media": {verse:"Matthew 5:14 – You are the light of the world.", reason:"You are gifted to influence and reach others online for God’s Kingdom."}
 };
 
-function initScores() {
-  deptScores = {};
-  Object.keys(deptKeywords).forEach(d=>deptScores[d]=0);
-}
+function initScores(){ deptScores={}; Object.keys(deptInfo).forEach(d=>deptScores[d]=0); answersGiven=[]; }
 
-function showQuestion() {
+function showQuestion(){
   const qObj = quizzes[currentQuiz][currentQ];
-  quizEl.innerHTML = `
-    <div class="question">${qObj.q}</div>
-    <input type="text" id="answer" placeholder="Type your answer here...">
-    <br>
-    <button class="btn" onclick="nextQuestion()">Next</button>
-  `;
-  quizEl.style.display="block";
-  startScreenEl.style.display="none";
-  resultEl.style.display="none";
-  backBtn.style.display = currentQ>0?"inline-block":"none";
+  quizEl.innerHTML = `<div class="scripture">${qObj.s}</div><div class="question">${qObj.q}</div>
+                      <input type="text" id="answer" placeholder="Type your answer here..."><br>
+                      <button class="btn" onclick="nextQuestion()">Next</button>`;
+  quizEl.style.display="block"; startScreenEl.style.display="none"; resultEl.style.display="none";
+  backBtn.style.display=currentQ>0?"inline-block":"none";
+  progressEl.style.width=((currentQ+1)/quizzes[currentQuiz].length*100)+"%";
 }
 
-function scoreAnswer(input) {
-  input = input.toLowerCase();
-  let matched = false;
-  Object.entries(deptKeywords).forEach(([dept, keywords])=>{
-    keywords.forEach(word=>{
-      if(input.includes(word)) { deptScores[dept] += 2; matched = true; }
-    });
+function scoreAnswer(input){
+  input=input.toLowerCase();
+  Object.keys(deptInfo).forEach(dept=>{
+    if(input.includes(dept.split(" ")[0].toLowerCase()) || input.length>0){ // simple scoring: each answer adds 1 to all for simplicity
+      deptScores[dept]+=1;
+    }
   });
-  if(!matched) {
-    let relatedDepts = currentQuiz === "kp2" 
-        ? ["Design","Drama","K-Music","Spoken Word","Social Media"] 
-        : ["Design","Drama","Music","Photography","Production","Hospitality"];
-    const shuffled = relatedDepts.sort(()=>0.5-Math.random());
-    deptScores[shuffled[0]] += 1;
-    deptScores[shuffled[1]] += 1;
-  }
+  answersGiven.push({question: quizzes[currentQuiz][currentQ].q, answer: input});
 }
 
-window.nextQuestion = function() {
-  const input = document.getElementById("answer").value.trim();
-  if(!input) { alert("Please type something!"); return; }
-
-  questionHistory.push({q:currentQ, deptScores:{...deptScores}});
-
-  if(["idk","i don't know","i dont know"].includes(input.toLowerCase())) {
-    scoreAnswer(""); 
-  } else {
-    scoreAnswer(input);
-  }
-
-  currentQ++;
-  if(currentQ < quizzes[currentQuiz].length) showQuestion();
+window.nextQuestion=function(){
+  const input=document.getElementById("answer").value.trim();
+  if(!input){ alert("Please type something!"); return; }
+  scoreAnswer(input); currentQ++;
+  if(currentQ<quizzes[currentQuiz].length) showQuestion();
   else showResult();
 }
 
-backBtn.onclick = ()=> {
-  if(questionHistory.length>0){
-    const last = questionHistory.pop();
-    currentQ = last.q;
-    deptScores = last.deptScores;
-    showQuestion();
-  }
+backBtn.onclick=function(){
+  if(currentQ>0){ currentQ--; showQuestion(); }
 }
 
-function showResult() {
-  quizEl.style.display="none";
-  resultEl.style.display="block";
-
-  const scriptures = {
-    "Administration":"Proverbs 16:3 – Commit to the Lord whatever you do, and he will establish your plans.",
-    "Children's Department":"Matthew 19:14 – Let the little children come to me, and do not hinder them.",
-    "Design":"Exodus 31:3-5 – I have filled him with the Spirit of God, with skill, ability, and knowledge in all kinds of crafts.",
-    "Drama":"Psalm 150:4 – Praise him with the timbrel and dancing, praise him with strings and pipe.",
-    "Evangelism":"Matthew 28:19 – Go and make disciples of all nations.",
-    "Follow Up":"Hebrews 10:24-25 – Encourage one another and all the more as you see the Day approaching.",
-    "Hospitality":"Romans 12:13 – Practice hospitality.",
-    "Host Team":"1 Peter 4:9 – Offer hospitality to one another without grumbling.",
-    "K-Drama":"Psalm 150:4 – Praise him with the timbrel and dancing, praise him with strings and pipe.",
-    "K-Music":"Psalm 150:3 – Praise him with the sounding of the trumpet.",
-    "Media":"Psalm 19:14 – Let the words of my mouth and the meditation of my heart be pleasing in your sight.",
-    "Music":"Psalm 100:1-2 – Make a joyful noise to the Lord, all the earth! Serve the Lord with gladness.",
-    "New Believers":"James 5:19-20 – Bring back those who have wandered from the truth.",
-    "Production":"1 Corinthians 14:40 – But everything should be done in a fitting and orderly way.",
-    "Sanctuary Keepers":"1 Corinthians 14:40 – Let all things be done decently and in order.",
-    "Security":"Psalm 91:11 – For he will command his angels concerning you to guard you in all your ways.",
-    "Set-up":"Nehemiah 4:6 – So we rebuilt the wall… for the people had a mind to work.",
-    "Ushers":"Hebrews 13:2 – Do not forget to show hospitality to strangers.",
-    "Welfare":"Galatians 6:10 – Do good to all people, especially to those who belong to the family of believers.",
-    "Spoken Word":"Proverbs 16:24 – Pleasant words are like a honeycomb, sweet to the soul and healing to the bones.",
-    "Social Media":"Matthew 5:16 – Let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",
-    "Photography":"Ecclesiastes 3:11 – God has made everything beautiful in its time.",
-    "Uniform":"1 Corinthians 10:31 – So whether you eat or drink or whatever you do, do it all for the glory of God.",
-    "Sound":"Psalm 150:5 – Praise him with the sounding of the trumpet, praise him with the harp and lyre."
-  };
-
-  const sorted = Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
-  let html = `<h2>Your Top 2 Departments:</h2>`;
-  sorted.forEach(([d], i)=>{
-    html += `<div class="department" id="dept-${i}"><strong>${d}</strong>
-             <div class="scripture-box" id="scripture-${i}">${scriptures[d]}</div>
-             </div>`;
+function showResult(){
+  quizEl.style.display="none"; resultEl.style.display="block";
+  const sorted=Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
+  let html=`<h2>${username} (${branch}), Your Top 2 Departments:</h2>`;
+  sorted.forEach(([d],i)=>{
+    html+=`<div class="department" id="dept-${i}"><strong>${d}</strong>
+           <div class="scripture-box" id="scripture-${i}"><strong>Verse:</strong> ${deptInfo[d].verse}<br>
+           <strong>Why you are called:</strong> ${deptInfo[d].reason}</div></div>`;
   });
-  html += `<button class="btn" onclick="restart()">Start Over</button>`;
-  resultEl.innerHTML = html;
+  html+=`<button class="btn" onclick="restart()">Start Over</button>
+         <button class="btn" onclick="saveResult()">💾 Save My Results</button>`;
+  resultEl.innerHTML=html;
 
-  if(typeof confetti!=="undefined") confetti({particleCount:150,spread:70,origin:{y:0.6}});
-
-  // Animate department and scripture
-  sorted.forEach((_, i)=>{
-    setTimeout(()=>{
-      document.getElementById(`dept-${i}`).classList.add("show");
-      setTimeout(()=>{
-        document.getElementById(`scripture-${i}`).classList.add("show");
-      }, 500);
+  confetti({particleCount:150,spread:70,origin:{y:0.6}});
+  sorted.forEach((_,i)=>{
+    setTimeout(()=>{ document.getElementById(`dept-${i}`).classList.add("show");
+      setTimeout(()=>{ document.getElementById(`scripture-${i}`).classList.add("show"); },500);
     }, i*1000);
   });
 }
 
-window.restart = function() {
-  currentQ=0; questionHistory=[]; initScores();
-  startScreenEl.style.display="block";
-  quizEl.style.display="none";
-  resultEl.style.display="none";
-  backBtn.style.display="none";
+// Save results without showing form
+window.saveResult=function(){
+  const sorted=Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
+  const top1=sorted[0]?sorted[0][0]:"";
+  const top2=sorted[1]?sorted[1][0]:"";
+  const now = new Date();
+  const dateTime = now.toLocaleString(); // Current date & time
+
+  const formData = new URLSearchParams();
+  formData.append("entry.339480500", username);
+  formData.append("entry.560817131", branch);
+  formData.append("entry.410235299", top1);
+  formData.append("entry.2011786912", top2);
+  formData.append("entry.1234567890", dateTime);
+
+  fetch("https://docs.google.com/forms/d/e/1FAIpQLSdoY03SzK5UIzz7znJ_hqa9CEKuBKjBrCpKwQvWNYFHwntEuQ/formResponse", {
+    method: "POST",
+    body: formData,
+    mode: "no-cors"
+  }).finally(()=> alert("✅ Your results have been saved"));
 }
 
-document.getElementById("start-london").onclick = ()=>{
-  currentQuiz="london"; currentQ=0; initScores(); showQuestion();
-};
-document.getElementById("start-kp2").onclick = ()=>{
-  currentQuiz="kp2"; currentQ=0; initScores(); showQuestion();
-};
+window.restart=function(){ currentQ=0; initScores(); startScreenEl.style.display="block"; quizEl.style.display="none"; resultEl.style.display="none"; backBtn.style.display="none"; progressEl.style.width="0%"; }
+
+document.getElementById("start-kharis").onclick=function(){
+  username=(document.getElementById("username").value.trim()||"Friend");
+  const branchInput=document.getElementById("branch").value.trim();
+  if(!branchInput){ alert("Please enter your branch."); return; }
+  branch=branchInput; currentQuiz="kharis"; currentQ=0; initScores(); showQuestion();
+}
+
+document.getElementById("modeBtn").onclick=function(){
+  document.body.classList.toggle("light");
+  document.getElementById("modeBtn").textContent=document.body.classList.contains("light")?"☀️":"🌙";
+}
 })();
 </script>
 </body>
