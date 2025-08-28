@@ -141,7 +141,6 @@ const quizzes = {
   ]
 };
 
-// Department characteristics and scriptures
 const deptData = {
   "Administration": {desc:"You are highly organised, love planning, and excel at coordinating tasks.", scripture:"1 Corinthians 14:40 – But everything should be done in a fitting and orderly way."},
   "Children's Department": {desc:"You have a heart for children, enjoy teaching, nurturing, and making learning fun.", scripture:"Matthew 19:14 – Let the little children come to me."},
@@ -220,7 +219,6 @@ function scoreAnswer(input) {
   if(input.includes("help")||input.includes("serve")||input.includes("care")) traits.servant++;
   
   Object.entries(deptKeywords).forEach(([dept, keywords])=>{
-    // Only allow Children's Department for London branches
     if(dept==="Children's Department" && !["kharis london","london"].includes(branch.toLowerCase())) return;
     keywords.forEach(word=>{
       if(input.includes(word)) deptScores[dept] += 2;
@@ -278,8 +276,7 @@ function showResult() {
              ${deptData[d].desc} <br><strong>Scripture:</strong> ${deptData[d].scripture}
              </div></div>`;
   });
-  html += `<button class="btn" onclick="restart()">Start Over</button>
-           <button class="btn" onclick="saveResult()">💾 Save My Results</button>`;
+  html += `<button class="btn" onclick="restart()">Start Over</button>`;
   resultEl.innerHTML = html;
 
   if(typeof confetti!=="undefined") confetti({particleCount:150,spread:70,origin:{y:0.6}});
@@ -292,6 +289,9 @@ function showResult() {
       }, 500);
     }, i*1000);
   });
+
+  // **Autosave at the end**
+  saveResult();
 }
 
 window.nextQuestion = nextQuestion;
@@ -326,7 +326,7 @@ window.saveResult = function(){
     headers: { "Content-Type": "application/json" },
     mode: "no-cors"
   })
-  .then(() => alert("✅ Your results have been saved!"))
+  .then(() => alert("✅ Your results have been saved automatically!"))
   .catch(err => {
     console.error(err);
     alert("❌ Error saving results. Check console.");
