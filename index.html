@@ -141,20 +141,44 @@ const quizzes = {
   ]
 };
 
+// Department characteristics and scriptures
+const deptData = {
+  "Administration": {desc:"You are highly organised, love planning, and excel at coordinating tasks.", scripture:"1 Corinthians 14:40 – But everything should be done in a fitting and orderly way."},
+  "Children's Department": {desc:"You have a heart for children, enjoy teaching, nurturing, and making learning fun.", scripture:"Matthew 19:14 – Let the little children come to me."},
+  "Design": {desc:"You are creative, visual, and love expressing ideas through art and design.", scripture:"Exodus 35:35 – He has filled them with skill to do all kinds of work."},
+  "Drama": {desc:"You love storytelling, performing, and conveying messages through acting.", scripture:"Psalm 16:9 – You have made known to me the path of life."},
+  "Evangelism": {desc:"Bold, outspoken, and passionate about sharing the Gospel with others.", scripture:"Romans 1:16 – I am not ashamed of the gospel."},
+  "Follow Up": {desc:"Caring, attentive, and excellent at mentoring or guiding others.", scripture:"Galatians 6:2 – Carry each other's burdens."},
+  "Hospitality": {desc:"Warm, friendly, and love making people feel welcomed and cared for.", scripture:"Romans 12:13 – Share with the Lord’s people who are in need."},
+  "Host Team": {desc:"Friendly, attentive, and love helping people feel comfortable and guided.", scripture:"Hebrews 13:2 – Do not forget to show hospitality."},
+  "Music": {desc:"Talented musically, passionate about worship through song or instruments.", scripture:"Psalm 100:2 – Serve the Lord with gladness."},
+  "Media": {desc:"Tech-savvy, creative, and skilled at visual storytelling.", scripture:"Proverbs 18:15 – The heart of the discerning acquires knowledge."},
+  "Production": {desc:"Skilled with tech, sound, and stage equipment to enhance experiences.", scripture:"1 Corinthians 12:28 – God has appointed various roles in the church."},
+  "Sanctuary Keepers": {desc:"Responsible, meticulous, and take pride in maintaining the church environment.", scripture:"1 Corinthians 14:40 – Everything done properly and in order."},
+  "Set-up": {desc:"Practical, helpful, and love preparing environments for events.", scripture:"Colossians 3:23 – Whatever you do, work at it wholeheartedly."},
+  "Ushers": {desc:"Guiding, friendly, and dedicated to ensuring smooth services.", scripture:"1 Peter 4:10 – Each of you should use whatever gift you have received."},
+  "Welfare": {desc:"Caring, compassionate, and always looking to help and serve others.", scripture:"Galatians 6:10 – Do good to all people."},
+  "Social Media": {desc:"Creative, strategic, and enjoy sharing messages online.", scripture:"Matthew 5:14 – Let your light shine before others."},
+  "Security": {desc:"Protective, responsible, and concerned about safety and order.", scripture:"Psalm 34:7 – The angel of the Lord encamps around those who fear him."},
+  "Uniform": {desc:"Detail-oriented, value presentation, and love maintaining standards.", scripture:"1 Timothy 4:12 – Set an example in conduct."},
+  "Sound": {desc:"Technical, precise, and skilled in producing high-quality sound experiences.", scripture:"Psalm 33:3 – Sing to him a new song; play skillfully."},
+  "Spoken Word": {desc:"Expressive, articulate, and passionate about conveying truth through words.", scripture:"Proverbs 16:24 – Pleasant words are a honeycomb."}
+};
+
 const deptKeywords = {
   "Administration":["organise","plan","manage","admin","schedule"],
   "Children's Department":["children","kids","play","teach"],
   "Design":["creative","visual","art","design","draw"],
   "Drama":["act","perform","storytelling","drama"],
-  "Evangelism":["share","bold","witness","evangelism","preach"],
-  "Follow Up":["follow","mentor","support","guidance"],
-  "Hospitality":["welcome","greet","friendly","hospitality"],
-  "Host Team":["host","welcome","assist","greeter"],
+  "Evangelism":["share","bold","witness","evangelism","preach","lead","speak"],
+  "Follow Up":["follow","mentor","support","guidance","help"],
+  "Hospitality":["welcome","greet","friendly","hospitality","serve","care"],
+  "Host Team":["host","welcome","assist","greeter","guide"],
   "Music":["sing","play","instrument","worship","music"],
   "Media":["camera","video","photos","media","tech"],
   "Production":["sound","lights","tech","production"],
   "Sanctuary Keepers":["clean","organise","maintain","church"],
-  "Set-up":["setup","arrange","prepare","set-up"],
+  "Set-up":["setup","arrange","prepare","set-up","help"],
   "Ushers":["guide","assist","usher","welcome"],
   "Welfare":["help","serve","support","care","welfare"],
   "Social Media":["trends","post","social","online","media"],
@@ -194,11 +218,15 @@ function scoreAnswer(input) {
   if(input.includes("organise")||input.includes("plan")||input.includes("arrange")) traits.organised++;
   if(input.includes("speak")||input.includes("lead")||input.includes("bold")) traits.bold++;
   if(input.includes("help")||input.includes("serve")||input.includes("care")) traits.servant++;
+  
   Object.entries(deptKeywords).forEach(([dept, keywords])=>{
+    // Only allow Children's Department for London branches
+    if(dept==="Children's Department" && !["kharis london","london"].includes(branch.toLowerCase())) return;
     keywords.forEach(word=>{
       if(input.includes(word)) deptScores[dept] += 2;
     });
   });
+
   answersGiven.push(JSON.parse(JSON.stringify({question: quizzes[currentQuiz][currentQ].q, answer: input, scripture: quizzes[currentQuiz][currentQ].s})));
 }
 
@@ -232,18 +260,23 @@ function showResult() {
   quizEl.style.display="none";
   resultEl.style.display="block";
 
+  // Adjust top departments based on traits
   if(traits.creative>traits.organised) deptScores["Design"]+=2;
   if(traits.organised>traits.creative) deptScores["Administration"]+=2;
   if(traits.bold>traits.servant) deptScores["Evangelism"]+=2;
   if(traits.servant>traits.bold) deptScores["Welfare"]+=2;
 
-  const sorted = Object.entries(deptScores).sort((a,b)=>b[1]-a[1]).slice(0,2);
+  const sorted = Object.entries(deptScores)
+      .filter(([dept, score]) => score > 0)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,2);
 
   let html = `<h2>${username} (${branch}), Your Top 2 Departments:</h2>`;
   sorted.forEach(([d], i)=>{
     html += `<div class="department" id="dept-${i}"><strong>${d}</strong>
-             <div class="scripture-box" id="scripture-${i}">God has gifted you uniquely to serve in ${d}.</div>
-             </div>`;
+             <div class="scripture-box" id="scripture-${i}">
+             ${deptData[d].desc} <br><strong>Scripture:</strong> ${deptData[d].scripture}
+             </div></div>`;
   });
   html += `<button class="btn" onclick="restart()">Start Over</button>
            <button class="btn" onclick="saveResult()">💾 Save My Results</button>`;
